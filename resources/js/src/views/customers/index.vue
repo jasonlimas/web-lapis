@@ -65,7 +65,6 @@
                                     </a>
                                 </div>
                             </template>
-                            <template #price="props"> Rp {{ props.row.item_price }} </template>
                         </v-client-table>
                     </div>
                 </div>
@@ -82,7 +81,7 @@ import Swal from 'sweetalert2';
 import { useMeta } from '@/composables/use-meta';
 useMeta({ title: 'Daftar Customer' });
 
-const columns = ref(['cust_code', 'cust_name', 'action']);
+const columns = ref(['cust_code', 'cust_desc', 'action']);
 const items = ref([]);
 const table_option = ref({
     perPage: 10,
@@ -106,8 +105,18 @@ onMounted(() => {
 
 const fetchItems = async () => {
     try {
-        const response = await axios.get('/api/items');
-        items.value = response.data;
+        const response = await axios.get('/api/customers');
+        console.log('API Response:', response.data); // Add this line for debugging
+        if (response.data && Array.isArray(response.data)) {
+            items.value = response.data;
+        } else {
+            console.error('Unexpected data format:', response.data);
+            Swal.fire({
+                title: 'Error',
+                text: 'Unexpected data format from the server.',
+                icon: 'error',
+            });
+        }
     } catch (error) {
         console.error('Error fetching items:', error);
         Swal.fire({
@@ -135,7 +144,7 @@ const confirmDelete = (item) => {
 
 const deleteItem = async (item) => {
     try {
-        await axios.delete(`/api/items/${item.id}`);
+        await axios.delete(`/api/customers/${item.id}`);
         items.value = items.value.filter((d) => d.id !== item.id);
         Swal.fire({
             title: 'Deleted!',
@@ -154,7 +163,7 @@ const deleteItem = async (item) => {
 
 const edit_row = (item) => {
     // Redirect to the edit page with the item's id
-    window.location.href = `/items/edit/${item.id}`;
+    window.location.href = `/customers/edit/${item.id}`;
 };
 </script>
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\MasterCustomerController;
 use App\Http\Controllers\MasterItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,3 +22,7 @@ Route::post('/items', [MasterItemController::class, 'store']);
 Route::delete('/items/{id}', [MasterItemController::class, 'destroy']);
 Route::get('/items/{id}', [MasterItemController::class, 'show']);
 Route::put('/items/{id}', [MasterItemController::class, 'update']);
+
+// Customers
+Route::get('/customers', [MasterCustomerController::class, 'index']);
+Route::post('/customers', [MasterCustomerController::class, 'store']);
