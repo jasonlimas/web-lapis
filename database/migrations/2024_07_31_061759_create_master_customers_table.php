@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('master_customers', function (Blueprint $table) {
             $table->id();
+            $table->string('cust_code', 10)->unique();
+            $table->string('cust_desc', 25);
+            $table->string('cust_addr', 255);
             $table->timestamps();
         });
     }

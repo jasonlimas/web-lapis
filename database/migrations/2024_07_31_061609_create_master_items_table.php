@@ -15,6 +15,9 @@ return new class extends Migration
     {
         Schema::create('master_items', function (Blueprint $table) {
             $table->id();
+            $table->string('item_code', 4)->unique(); // max length 4
+            $table->string('item_desc', 255);
+            $table->integer('item_price');
             $table->timestamps();
         });
     }

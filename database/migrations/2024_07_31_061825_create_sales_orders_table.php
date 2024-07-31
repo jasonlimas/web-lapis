@@ -15,7 +15,12 @@ return new class extends Migration
     {
         Schema::create('sales_orders', function (Blueprint $table) {
             $table->id();
+            $table->string('so_nbr')->unique();
+            $table->foreignId('so_cust')->constrained('master_customers')->onDelete('cascade');
+            $table->date('so_ord_date');
+            $table->string('so_status');
             $table->timestamps();
+            $table->softDeletes();  // Soft delete
         });
     }
 
