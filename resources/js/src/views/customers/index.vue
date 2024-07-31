@@ -21,7 +21,7 @@
                     <div class="custom-table">
                         <div class="d-flex justify-content-between align-items-center p-3">
                             <div></div> <!-- Empty div to push button to the right -->
-                            <a href="/items/create" class="btn btn-primary">Tambah Customer</a>
+                            <a href="/customers/create" class="btn btn-primary">Tambah Customer</a>
                         </div>
 
                         <v-client-table :data="items" :columns="columns" :options="table_option">
