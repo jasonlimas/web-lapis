@@ -35,6 +35,23 @@ const routes = [
         component: () => import('../views/items/edit.vue')
     },
 
+    // Customers
+    {
+        path: '/customers',
+        name: 'customers',
+        component: () => import('../views/customers/index.vue')
+    },
+    {
+        path: '/customers/create',
+        name: 'customers-create',
+        component: () => import('../views/customers/create.vue')
+    },
+    {
+        path: '/customers/edit/:id',
+        name: 'customers-edit',
+        component: () => import('../views/customers/edit.vue')
+    },
+
     //components
     {
         path: '/components/tabs',
