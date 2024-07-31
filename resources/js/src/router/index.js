@@ -24,6 +24,11 @@ const routes = [
         name: 'items',
         component: () => import('../views/items/index.vue'),
     },
+    {
+        path: '/items/create',
+        name: 'items-create',
+        component: () => import('../views/items/create.vue')
+    },
 
     //components
     {
