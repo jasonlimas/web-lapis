@@ -26,7 +26,7 @@
 
                         <v-client-table :data="items" :columns="columns" :options="table_option">
                             <template #action="props">
-                                <a href="javascript:;" class="cancel" @click="delete_row(props.row)">
+                                <a href="javascript:;" class="cancel" @click="confirmDelete(props.row)">
                                     <svg
                                         xmlns="http://www.w3.org/2000/svg"
                                         width="24"
@@ -58,6 +58,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 import { useMeta } from '@/composables/use-meta';
 useMeta({ title: 'Daftar Item' });
@@ -90,12 +91,45 @@ const fetchItems = async () => {
         items.value = response.data;
     } catch (error) {
         console.error('Error fetching items:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Failed to fetch items.',
+            icon: 'error',
+        });
     }
 };
 
-const delete_row = (item) => {
-    if (confirm('Are you sure want to delete selected row ?')) {
-        items.value = items.value.filter((d) => d.id != item.id);
+const confirmDelete = (item) => {
+    Swal.fire({
+        title: 'Hapus Item?',
+        text: "Barang yang sudah dihapus tidak dapat kembali",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Ya, hapus',
+        cancelButtonText: 'Tidak, jangan hapus',
+    }).then((result) => {
+        if (result.isConfirmed) {
+            deleteItem(item);
+        }
+    });
+};
+
+const deleteItem = async (item) => {
+    try {
+        await axios.delete(`/api/items/${item.id}`);
+        items.value = items.value.filter((d) => d.id !== item.id);
+        Swal.fire({
+            title: 'Terhapus!',
+            text: 'Item telah dihapus.',
+            icon: 'success',
+        });
+    } catch (error) {
+        console.error('Error deleting item:', error);
+        Swal.fire({
+            title: 'Error',
+            text: 'Gagal untuk menghapus item.',
+            icon: 'error',
+        });
     }
 };
 </script>

@@ -18,3 +18,4 @@ use Illuminate\Support\Facades\Route;
 // Items
 Route::get('/items', [MasterItemController::class, 'index']);
 Route::post('/items', [MasterItemController::class, 'store']);
+Route::delete('/items/{id}', [MasterItemController::class, 'destroy']);

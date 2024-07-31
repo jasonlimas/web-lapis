@@ -25,4 +25,12 @@ class MasterItemController extends Controller
 
         return response()->json(['message' => 'Item created successfully', 'item' => $item], 201);
     }
+
+    public function destroy($id)
+    {
+        $item = MasterItem::findOrFail($id);
+        $item->delete();
+
+        return response()->json(['message' => 'Item deleted successfully'], 200);
+    }
 }
