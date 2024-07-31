@@ -29,6 +29,11 @@ const routes = [
         name: 'items-create',
         component: () => import('../views/items/create.vue')
     },
+    {
+        path: '/items/edit/:id',
+        name: 'items-edit',
+        component: () => import('../views/items/edit.vue')
+    },
 
     //components
     {

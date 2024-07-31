@@ -26,25 +26,44 @@
 
                         <v-client-table :data="items" :columns="columns" :options="table_option">
                             <template #action="props">
-                                <a href="javascript:;" class="cancel" @click="confirmDelete(props.row)">
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        width="24"
-                                        height="24"
-                                        viewBox="0 0 24 24"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        stroke-width="1.5"
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        class="feather feather-trash-2 table-cancel"
-                                    >
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
-                                </a>
+                                <div class="d-flex justify-content-around">
+                                    <a href="javascript:;" class="edit" @click="edit_row(props.row)">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="feather feather-edit table-edit"
+                                        >
+                                            <path d="M12 20h9"></path>
+                                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+                                        </svg>
+                                    </a>
+                                    <a href="javascript:;" class="cancel" @click="confirmDelete(props.row)">
+                                        <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            width="24"
+                                            height="24"
+                                            viewBox="0 0 24 24"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            stroke-width="1.5"
+                                            stroke-linecap="round"
+                                            stroke-linejoin="round"
+                                            class="feather feather-trash-2 table-cancel"
+                                        >
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </a>
+                                </div>
                             </template>
                             <template #price="props"> Rp {{ props.row.item_price }} </template>
                         </v-client-table>
@@ -101,12 +120,12 @@ const fetchItems = async () => {
 
 const confirmDelete = (item) => {
     Swal.fire({
-        title: 'Hapus Item?',
-        text: "Barang yang sudah dihapus tidak dapat kembali",
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
-        confirmButtonText: 'Ya, hapus',
-        cancelButtonText: 'Tidak, jangan hapus',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
     }).then((result) => {
         if (result.isConfirmed) {
             deleteItem(item);
@@ -119,18 +138,23 @@ const deleteItem = async (item) => {
         await axios.delete(`/api/items/${item.id}`);
         items.value = items.value.filter((d) => d.id !== item.id);
         Swal.fire({
-            title: 'Terhapus!',
-            text: 'Item telah dihapus.',
+            title: 'Deleted!',
+            text: 'Your item has been deleted.',
             icon: 'success',
         });
     } catch (error) {
         console.error('Error deleting item:', error);
         Swal.fire({
             title: 'Error',
-            text: 'Gagal untuk menghapus item.',
+            text: 'Failed to delete item.',
             icon: 'error',
         });
     }
+};
+
+const edit_row = (item) => {
+    // Redirect to the edit page with the item's id
+    window.location.href = `/items/edit/${item.id}`;
 };
 </script>
 
