@@ -18,6 +18,13 @@ const routes = [
         component: () => import(/* webpackChunkName: "index2" */ '../views/index2.vue'),
     },
 
+    // Items
+    {
+        path: '/items',
+        name: 'items',
+        component: () => import('../views/items.vue'),
+    },
+
     //components
     {
         path: '/components/tabs',
