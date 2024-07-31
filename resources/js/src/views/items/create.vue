@@ -7,7 +7,7 @@
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
                                 <li class="breadcrumb-item"><a href="javascript:;">Items</a></li>
-                                <li class="breadcrumb-item"><a href="javascript:;">Daftar Item</a></li>
+                                <li class="breadcrumb-item"><a href="/items">Daftar Item</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><span>Tambah Item</span></li>
                             </ol>
                         </nav>
@@ -21,15 +21,16 @@
                 <h1>Tambah Item</h1>
                 <div class="panel br-4">
                     <div class="panel-body">
+                        <!-- Add items form -->
                         <form @submit.prevent="submitForm">
                             <div class="form-group">
-                                <input v-model="item_code" type="text" class="form-control" id="item_code" placeholder="Kode item *" />
+                                <input v-model="item_code" type="text" class="form-control" placeholder="Kode item *" required />
                             </div>
                             <div class="form-group">
-                                <input v-model="item_desc" type="text" class="form-control" id="item_desc" placeholder="Deskripsi item *" />
+                                <input v-model="item_desc" type="text" class="form-control" placeholder="Deskripsi item *" required />
                             </div>
                             <div class="form-group">
-                                <input v-model="item_price" type="number" class="form-control" id="item_price" placeholder="Harga *" />
+                                <input v-model="item_price" type="number" class="form-control" placeholder="Harga *" required />
                             </div>
                             <small id="emailHelp2" class="block text-muted">*Harus diisi</small>
                             <div class="form-group ps-0 mt-3"></div>
@@ -46,6 +47,7 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import { useRouter } from 'vue-router';
 
 const item_code = ref('');
@@ -58,15 +60,51 @@ const submitForm = async () => {
         const response = await axios.post('/api/items', {
             item_code: item_code.value,
             item_desc: item_desc.value,
-            item_price: item_price.value
+            item_price: item_price.value,
         });
-        console.log(response.data);
-        alert('Item created successfully');
-        // Redirect to the items list page
-        router.push('/items');
+        Swal.fire({
+            title: 'Sukses',
+            text: 'Item berhasil ditambahkan!',
+            icon: 'success',
+        }).then(() => {
+            router.push('/items');
+        });
     } catch (error) {
-        console.error('Error response:', error.response);
-        alert('Failed to create item');
+        if (error.response && error.response.status === 422) {
+            const errors = error.response.data.errors;
+            let errorMessage = '';
+            for (const key in errors) {
+                if (errors.hasOwnProperty(key)) {
+                    errorMessage += errors[key][0] + '\n';
+                }
+            }
+
+            const toast =  window.Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                padding: '2em'
+            });
+            toast.fire({
+                icon: 'error',
+                title: 'Kode item tidak tersedia. Masukkan kode baru.',
+                padding: '2em'
+            });
+        } else {
+            const toast =  window.Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                padding: '2em'
+            });
+            toast.fire({
+                icon: 'error',
+                title: 'An unexpected error occured.',
+                padding: '2em'
+            });
+        }
     }
 };
 </script>
