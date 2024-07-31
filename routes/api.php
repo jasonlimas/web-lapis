@@ -15,8 +15,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+// Items
+Route::get('/items', [MasterItemController::class, 'index']);
 Route::post('/items', [MasterItemController::class, 'store']);

@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 
 class MasterItemController extends Controller
 {
+    public function index()
+    {
+        $items = MasterItem::all();
+        return response()->json($items);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([
