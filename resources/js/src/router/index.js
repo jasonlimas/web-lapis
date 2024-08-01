@@ -52,6 +52,14 @@ const routes = [
         component: () => import('../views/customers/edit.vue')
     },
 
+    // Orders
+    // Invoices
+    {
+        path: '/invoices',
+        name: 'invoices',
+        component: () => import('../views/invoices/index.vue')
+    },
+
     //components
     {
         path: '/components/tabs',
