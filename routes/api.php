@@ -27,3 +27,5 @@ Route::put('/items/{id}', [MasterItemController::class, 'update']);
 Route::get('/customers', [MasterCustomerController::class, 'index']);
 Route::post('/customers', [MasterCustomerController::class, 'store']);
 Route::delete('/customers/{id}', [MasterCustomerController::class, 'destroy']);
+Route::get('/customers/{id}', [MasterCustomerController::class, 'show']);
+Route::put('/customers/{id}', [MasterCustomerController::class, 'update']);

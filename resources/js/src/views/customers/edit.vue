@@ -6,8 +6,9 @@
                     <div class="page-header">
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:;">Items</a></li>
-                                <li class="breadcrumb-item active" aria-current="page"><span>Daftar Item</span></li>
+                                <li class="breadcrumb-item"><a href="javascript:;">Customers</a></li>
+                                <li class="breadcrumb-item"><a href="/customers">Daftar Customer</a></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span>Edit Customer</span></li>
                             </ol>
                         </nav>
                     </div>
@@ -16,57 +17,26 @@
         </teleport>
 
         <div class="row layout-top-spacing">
-            <div class="col-xl-12 col-lg-12 col-sm-12 layout-spacing">
-                <div class="panel br-6 p-0">
-                    <div class="custom-table">
-                        <div class="d-flex justify-content-between align-items-center p-3">
-                            <div></div> <!-- Empty div to push button to the right -->
-                            <a href="/items/create" class="btn btn-primary">Add Item</a>
-                        </div>
-
-                        <v-client-table :data="items" :columns="columns" :options="table_option">
-                            <template #action="props">
-                                <div class="d-flex justify-content-around">
-                                    <a href="javascript:;" class="edit" @click="edit_row(props.row)">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="feather feather-edit table-edit"
-                                        >
-                                            <path d="M12 20h9"></path>
-                                            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
-                                        </svg>
-                                    </a>
-                                    <a href="javascript:;" class="cancel" @click="confirmDelete(props.row)">
-                                        <svg
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            width="24"
-                                            height="24"
-                                            viewBox="0 0 24 24"
-                                            fill="none"
-                                            stroke="currentColor"
-                                            stroke-width="1.5"
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            class="feather feather-trash-2 table-cancel"
-                                        >
-                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                            <line x1="10" y1="11" x2="10" y2="17"></line>
-                                            <line x1="14" y1="11" x2="14" y2="17"></line>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </template>
-                            <template #price="props"> Rp {{ props.row.item_price }} </template>
-                        </v-client-table>
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
+                <h1>Edit Customer</h1>
+                <div class="panel br-4">
+                    <div class="panel-body">
+                        <!-- Add items form -->
+                        <form @submit.prevent="submitForm">
+                            <div class="form-group">
+                                <input v-model="cust_code" type="text" class="form-control" placeholder="Kode customer *" required />
+                            </div>
+                            <div class="form-group">
+                                <input v-model="cust_desc" type="text" class="form-control" placeholder="Nama customer *" required />
+                            </div>
+                            <div class="form-group">
+                                <textarea v-model="cust_addr" class="form-control" placeholder="Alamat *" required rows="4"></textarea>
+                            </div>
+                            <small id="emailHelp2" class="block text-muted">*Harus diisi</small>
+                            <div class="form-group ps-0 mt-3"></div>
+                            <button type="submit" class="btn btn-primary mt-3 me-2">Update</button>
+                            <a href="/customers" class="btn btn-danger mt-3">Batal</a>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -75,98 +45,86 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { useRouter, useRoute } from 'vue-router';
 
-import { useMeta } from '@/composables/use-meta';
-useMeta({ title: 'Daftar Item' });
+const cust_code = ref('');
+const cust_desc = ref('');
+const cust_addr = ref('');
+const router = useRouter();
+const route = useRoute();
 
-const columns = ref(['item_code', 'item_desc', 'item_price', 'action']);
-const items = ref([]);
-const table_option = ref({
-    perPage: 10,
-    perPageValues: [5, 10, 20, 50],
-    skin: 'table table-hover',
-    columnsClasses: { item_code: 'col-code', item_desc: 'col-name', item_price: 'col-price', action: 'actions text-center' },
-    sortable: [],
-    pagination: { nav: 'scroll', chunk: 5 },
-    texts: {
-        count: 'Showing {from} to {to} of {count}',
-        filter: '',
-        filterPlaceholder: 'Search...',
-        limit: 'Results:',
-    },
-    resizableColumns: false,
-});
-
-onMounted(() => {
-    fetchItems();
-});
-
-const fetchItems = async () => {
+onMounted(async () => {
+    const id = route.params.id;
     try {
-        const response = await axios.get('/api/items');
-        items.value = response.data;
+        const response = await axios.get(`/api/customers/${id}`);
+        console.log(response.data); // Log the response to check the fetched data
+        const customer = response.data;
+        cust_code.value = customer.cust_code;
+        cust_desc.value = customer.cust_desc;
+        cust_addr.value = customer.cust_addr;
     } catch (error) {
-        console.error('Error fetching items:', error);
+        console.error('Error fetching customer data:', error);
         Swal.fire({
             title: 'Error',
-            text: 'Failed to fetch items.',
+            text: 'Failed to load customer data.',
             icon: 'error',
         });
     }
-};
+});
 
-const confirmDelete = (item) => {
-    Swal.fire({
-        title: 'Are you sure?',
-        text: "You won't be able to revert this!",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Yes, delete it!',
-        cancelButtonText: 'No, cancel!',
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteItem(item);
-        }
-    });
-};
-
-const deleteItem = async (item) => {
+const submitForm = async () => {
+    const id = route.params.id;
     try {
-        await axios.delete(`/api/items/${item.id}`);
-        items.value = items.value.filter((d) => d.id !== item.id);
+        await axios.put(`/api/customers/${id}`, {
+            cust_code: cust_code.value,
+            cust_desc: cust_desc.value,
+            cust_addr: cust_addr.value,
+        });
         Swal.fire({
-            title: 'Deleted!',
-            text: 'Your item has been deleted.',
+            title: 'Sukses',
+            text: 'Customer berhasil diubah!',
             icon: 'success',
+        }).then(() => {
+            router.push('/customers');
         });
     } catch (error) {
-        console.error('Error deleting item:', error);
-        Swal.fire({
-            title: 'Error',
-            text: 'Failed to delete item.',
-            icon: 'error',
-        });
-    }
-};
+        if (error.response && error.response.status === 422) {
+            const errors = error.response.data.errors;
+            let errorMessage = '';
+            for (const key in errors) {
+                if (errors.hasOwnProperty(key)) {
+                    errorMessage += errors[key][0] + '\n';
+                }
+            }
 
-const edit_row = (item) => {
-    // Redirect to the edit page with the item's id
-    window.location.href = `/items/edit/${item.id}`;
+            const toast =  window.Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                padding: '2em'
+            });
+            toast.fire({
+                icon: 'error',
+                title: 'Kode customer tidak tersedia. Masukkan kode baru.',
+                padding: '2em'
+            });
+        } else {
+            Swal.fire({
+                title: 'Error',
+                text: 'An unexpected error occurred.',
+                icon: 'error',
+            });
+        }
+    }
 };
 </script>
 
 <style scoped>
-/* Add custom styles for your table here, if needed */
-.table th.col-code, .table td.col-code {
-    width: 100px; /* Adjust as needed */
-}
-.table th.col-name, .table td.col-name {
-    width: 350px; /* Adjusted to take more space */
-}
-.table th.col-price, .table td.col-price {
-    width: 130px; /* Adjusted to take less space */
+.layout-px-spacing {
+    min-height: calc(100vh - 170px) !important;
 }
 </style>

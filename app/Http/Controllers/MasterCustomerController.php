@@ -34,4 +34,31 @@ class MasterCustomerController extends Controller
 
         return response()->json(['message' => 'Customer deleted successfully'], 200);
     }
+
+    public function show($id)
+    {
+        $customer = MasterCustomer::find($id);
+        if ($customer) {
+            return response()->json($customer);
+        } else {
+            return response()->json(['message' => 'Item not found'], 404);
+        }
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'cust_code' => 'required|max:10|unique:master_customers,cust_code,' . $id,
+            'cust_desc' => 'required|max:255',
+            'cust_addr' => 'required|max:255'
+        ]);
+
+        $customer = MasterCustomer::find($id);
+        if ($customer) {
+            $customer->update($request->all());
+            return response()->json(['message' => 'Customer updated successfully']);
+        } else {
+            return response()->json(['message' => 'Customer not found'], 404);
+        }
+    }
 }
