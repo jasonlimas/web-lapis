@@ -18,6 +18,17 @@ class SalesOrderDetails extends Model
         'total'
     ];
 
+    protected static function booted()
+    {
+        static::saved(function ($detail) {
+            $detail->salesOrder->updateTotalAmount();
+        });
+
+        static::deleted(function ($detail) {
+            $detail->salesOrder->updateTotalAmount();
+        });
+    }
+
     public function item()
     {
         return $this->belongsTo(MasterItem::class, 'item_id');

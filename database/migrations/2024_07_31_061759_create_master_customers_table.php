@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('cust_code', 10)->unique();
             $table->string('cust_desc', 25);
             $table->string('cust_addr', 255);
+            $table->string('cust_phone', 20);
             $table->timestamps();
         });
     }

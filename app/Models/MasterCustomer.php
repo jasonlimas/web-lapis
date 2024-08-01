@@ -12,6 +12,7 @@ class MasterCustomer extends Model
     protected $fillable = [
         'cust_code',
         'cust_desc',
-        'cust_addr'
+        'cust_addr',
+        'cust_phone'
     ];
 }

@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('so_cust')->constrained('master_customers')->onDelete('cascade');
             $table->date('so_ord_date');
             $table->string('so_status');
+            $table->integer('so_total');
             $table->timestamps();
             $table->softDeletes();  // Soft delete
         });
