@@ -107,14 +107,17 @@
                                                     <div class="form-group row">
                                                         <label for="client-name" class="col-sm-3 col-form-label col-form-label-sm">Name</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" v-model="params.to.name" id="client-name" class="form-control form-control-sm" placeholder="Client Name" />
+                                                            <select v-model="params.to.name" class="form-control form-control-sm" id="client-name">
+                                                                <option disabled value="">Select Client</option>
+                                                                <option v-for="client in clientOptions" :key="client.value" :value="client.value">{{ client.text }}</option>
+                                                            </select>
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row">
                                                         <label for="client-address" class="col-sm-3 col-form-label col-form-label-sm">Address</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" v-model="params.to.address" id="client-address" class="form-control form-control-sm" placeholder="XYZ Street" />
+                                                            <input type="text" v-model="params.to.address" id="client-address" class="form-control form-control-sm" placeholder="XYZ Street" disabled />
                                                         </div>
                                                     </div>
 
@@ -134,7 +137,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group mb-4">
                                                     <label for="number">Invoice Number</label>
-                                                    <input type="text" v-model="params.invoice_no" id="number" class="form-control form-control-sm" placeholder="#0001" />
+                                                    <input type="text" v-model="params.invoice_no" id="number" class="form-control form-control-sm" placeholder="#0001" disabled />
                                                 </div>
                                             </div>
 
@@ -186,13 +189,16 @@
                                                             </ul>
                                                         </td>
                                                         <td class="description">
-                                                            <input type="text" v-model="item.title" class="form-control form-control-sm" placeholder="Item Description" />
+                                                            <select v-model="item.title" class="form-control form-control-sm">
+                                                                <option disabled value="">Select Item</option>
+                                                                <option v-for="option in itemOptions" :key="option.value" :value="option.value">{{ option.text }}</option>
+                                                            </select>
                                                         </td>
                                                         <td class="rate">
-                                                            <input type="number" v-model="item.rate" class="form-control form-control-sm" placeholder="Price" />
+                                                            <input type="number" v-model="item.rate" class="form-control form-control-sm" placeholder="Price" required />
                                                         </td>
                                                         <td class="text-end qty">
-                                                            <input type="number" v-model="item.quantity" class="form-control form-control-sm" placeholder="Quantity" />
+                                                            <input type="number" v-model="item.quantity" class="form-control form-control-sm" placeholder="Quantity" required />
                                                         </td>
                                                         <td class="text-center amount">
                                                             <span class="editable-amount mt-2">
@@ -244,7 +250,7 @@
                                                     <div class="invoice-totals-row invoice-summary-balance-due">
                                                         <div class="invoice-summary-label">Total</div>
                                                         <div class="invoice-summary-value">
-                                                            <div class="balance-due-amount"><span class="currency">$</span><span>90</span></div>
+                                                            <div class="balance-due-amount"><span class="currency">Rp </span><span>{{ totalAmount }}</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -329,7 +335,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
 import '@/assets/sass/apps/invoice-add.scss';
 
 //flatpickr
@@ -353,6 +359,16 @@ const params = ref({
     bank_info: { no: '598 009 0819', name: 'BCA a/n Fransiska Susan Margono' },
     notes: '',
 });
+const clientOptions = ref([
+    { value: 'Client A', text: 'Client A' },
+    { value: 'Client B', text: 'Client B' },
+    { value: 'Client C', text: 'Client C' },
+]);
+const itemOptions = ref([
+    { value: 'Item 1', text: 'Item 1' },
+    { value: 'Item 2', text: 'Item 2' },
+    { value: 'Item 3', text: 'Item 3' },
+]);
 const currency_list = ref([]);
 const selected_currency = ref({ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' });
 const tax_type_list = ref([]);
@@ -405,4 +421,8 @@ const add_item = () => {
 const remove_item = (item) => {
     items.value = items.value.filter((d) => d.id != item.id);
 };
+
+const totalAmount = computed(() => {
+    return items.value.reduce((total, item) => total + item.amount, 0);
+});
 </script>
