@@ -155,11 +155,11 @@
                                             <table class="table table-bordered item-table">
                                                 <thead>
                                                     <tr>
-                                                        <th class=""></th>
-                                                        <th>Description</th>
-                                                        <th class="">Rate</th>
-                                                        <th class="">Qty</th>
-                                                        <th class="">Total</th>
+                                                        <th class="col-1"></th>
+                                                        <th class="col-3">Description</th>
+                                                        <th class="col-1">Rate</th>
+                                                        <th class="col-1">Qty</th>
+                                                        <th class="col-2">Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
