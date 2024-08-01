@@ -157,7 +157,7 @@
                                                     <tr>
                                                         <th class="col-1"></th>
                                                         <th class="col-3">Description</th>
-                                                        <th class="col-1">Rate</th>
+                                                        <th class="col-2">Rate</th>
                                                         <th class="col-1">Qty</th>
                                                         <th class="col-2">Total</th>
                                                     </tr>
