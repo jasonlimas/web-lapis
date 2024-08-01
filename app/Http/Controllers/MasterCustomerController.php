@@ -26,4 +26,12 @@ class MasterCustomerController extends Controller
 
         return response()->json(['message' => 'Customer created successfully', 'customer' => $customer], 201);
     }
+
+    public function destroy($id)
+    {
+        $customer = MasterCustomer::findOrFail($id);
+        $customer->delete();
+
+        return response()->json(['message' => 'Customer deleted successfully'], 200);
+    }
 }
