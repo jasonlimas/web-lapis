@@ -117,14 +117,14 @@
                                                     <div class="form-group row">
                                                         <label for="client-address" class="col-sm-3 col-form-label col-form-label-sm">Address</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" v-model="params.to.address" id="client-address" class="form-control form-control-sm" placeholder="XYZ Street" disabled />
+                                                            <input type="text" v-model="params.to.address" id="client-address" class="form-control form-control-sm" disabled />
                                                         </div>
                                                     </div>
 
                                                     <div class="form-group row">
                                                         <label for="client-phone" class="col-sm-3 col-form-label col-form-label-sm">Phone</label>
                                                         <div class="col-sm-9">
-                                                            <input type="text" v-model="params.to.phone" id="client-phone" class="form-control form-control-sm" placeholder="(123) 456 789" />
+                                                            <input type="text" v-model="params.to.phone" id="client-phone" class="form-control form-control-sm" disabled />
                                                         </div>
                                                     </div>
                                                 </div>
@@ -155,11 +155,11 @@
                                             <table class="table table-bordered item-table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-1"></th>
-                                                        <th class="col-3">Description</th>
-                                                        <th class="col-2">Rate</th>
-                                                        <th class="col-1">Qty</th>
-                                                        <th class="col-2">Total</th>
+                                                        <th class=""></th>
+                                                        <th>Description</th>
+                                                        <th class="">Rate</th>
+                                                        <th class="">Qty</th>
+                                                        <th class="text-end">Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -189,10 +189,7 @@
                                                             </ul>
                                                         </td>
                                                         <td class="description">
-                                                            <select v-model="item.title" class="form-control form-control-sm">
-                                                                <option disabled value="">Select Item</option>
-                                                                <option v-for="option in itemOptions" :key="option.value" :value="option.value">{{ option.text }}</option>
-                                                            </select>
+                                                            <input type="text" v-model="item.title" class="form-control form-control-sm" placeholder="Item Description" required />
                                                         </td>
                                                         <td class="rate">
                                                             <input type="number" v-model="item.rate" class="form-control form-control-sm" placeholder="Price" required />
@@ -250,7 +247,7 @@
                                                     <div class="invoice-totals-row invoice-summary-balance-due">
                                                         <div class="invoice-summary-label">Total</div>
                                                         <div class="invoice-summary-value">
-                                                            <div class="balance-due-amount"><span class="currency">Rp </span><span>{{ totalAmount }}</span></div>
+                                                            <div class="balance-due-amount"><span class="currency">$</span><span>{{ totalAmount }}</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -335,7 +332,8 @@
 </template>
 
 <script setup>
-import { onMounted, ref, computed } from 'vue';
+import { onMounted, ref, computed, watch } from 'vue';
+import axios from 'axios';
 import '@/assets/sass/apps/invoice-add.scss';
 
 //flatpickr
@@ -359,16 +357,7 @@ const params = ref({
     bank_info: { no: '598 009 0819', name: 'BCA a/n Fransiska Susan Margono' },
     notes: '',
 });
-const clientOptions = ref([
-    { value: 'Client A', text: 'Client A' },
-    { value: 'Client B', text: 'Client B' },
-    { value: 'Client C', text: 'Client C' },
-]);
-const itemOptions = ref([
-    { value: 'Item 1', text: 'Item 1' },
-    { value: 'Item 2', text: 'Item 2' },
-    { value: 'Item 3', text: 'Item 3' },
-]);
+const clientOptions = ref([]);
 const currency_list = ref([]);
 const selected_currency = ref({ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' });
 const tax_type_list = ref([]);
@@ -376,7 +365,7 @@ const selected_tax_type = ref({ key: 'None', value: null });
 const discount_list = ref([]);
 const selected_discount = ref({ key: 'None', value: null, type: '' });
 
-onMounted(() => {
+onMounted(async () => {
     //set default data
     items.value.push({ id: 1, title: '', description: '', rate: 0, quantity: 0, amount: 100, is_tax: false });
 
@@ -404,7 +393,37 @@ onMounted(() => {
         { key: 'Flat Amount', value: 25, type: 'amount' },
         { key: 'None', value: null, type: '' },
     ];
+
+    await fetchClients();
 });
+
+const fetchClients = async () => {
+    try {
+        const response = await axios.get('/api/customers');
+        clientOptions.value = response.data.map(customer => ({
+            value: customer.cust_code,
+            text: customer.cust_desc,
+            address: customer.cust_addr,
+            phone: customer.cust_phone,
+        }));
+    } catch (error) {
+        console.error('Error fetching clients:', error);
+    }
+};
+
+watch(
+    () => params.value.to.name,
+    (newValue) => {
+        const selectedClient = clientOptions.value.find(client => client.value === newValue);
+        if (selectedClient) {
+            params.value.to.address = selectedClient.address;
+            params.value.to.phone = selectedClient.phone;
+        } else {
+            params.value.to.address = '';
+            params.value.to.phone = '';
+        }
+    }
+);
 
 const change_file = (event) => {
     selected_file.value = URL.createObjectURL(event.target.files[0]);
