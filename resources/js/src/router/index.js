@@ -59,6 +59,11 @@ const routes = [
         name: 'invoices',
         component: () => import('../views/invoices/index.vue')
     },
+    {
+        path: '/invoices/create',
+        name: 'invoices-create',
+        component: () => import('../views/invoices/create.vue')
+    },
 
     //components
     {
