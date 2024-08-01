@@ -29,7 +29,7 @@
                                                 <input ref="fl_profile" type="file" class="d-none" accept="image/*" @change="change_file" />
                                                 <img
                                                     v-if="selected_file"
-                                                    :src="selected_file ? selected_file : require('@/assets/images/user-profile.jpeg')"
+                                                    :src="selected_file"
                                                     alt="profile"
                                                     class="profile-preview"
                                                     @click="$refs.fl_profile.click()"
@@ -155,11 +155,11 @@
                                             <table class="table table-bordered item-table">
                                                 <thead>
                                                     <tr>
-                                                        <th class=""></th>
-                                                        <th>Description</th>
-                                                        <th class="">Rate</th>
-                                                        <th class="">Qty</th>
-                                                        <th class="text-end">Total</th>
+                                                        <th class="col-1 "></th>
+                                                        <th class="col-3 ">Description</th>
+                                                        <th class="col-2 ">Rate</th>
+                                                        <th class="col-1 ">Qty</th>
+                                                        <th class="col-2 text-center">Total</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -189,7 +189,12 @@
                                                             </ul>
                                                         </td>
                                                         <td class="description">
-                                                            <input type="text" v-model="item.title" class="form-control form-control-sm" placeholder="Item Description" required />
+                                                            <select v-model="item.title" class="form-control form-control-sm" required>
+                                                                <option disabled value="">Select Item</option>
+                                                                <option v-for="option in itemOptions" :key="option.value" :value="option.value">
+                                                                    {{ option.text }}
+                                                                </option>
+                                                            </select>
                                                         </td>
                                                         <td class="rate">
                                                             <input type="number" v-model="item.rate" class="form-control form-control-sm" placeholder="Price" required />
@@ -336,7 +341,7 @@ import { onMounted, ref, computed, watch } from 'vue';
 import axios from 'axios';
 import '@/assets/sass/apps/invoice-add.scss';
 
-//flatpickr
+// flatpickr
 import flatPickr from 'vue-flatpickr-component';
 import 'flatpickr/dist/flatpickr.css';
 import '@/assets/sass/forms/custom-flatpickr.css';
@@ -351,13 +356,13 @@ const params = ref({
     invoice_no: '',
     from: { name: 'LapisKu Cakes', email: 'lapisku_cakes@yahoo.co.id', address: 'Jakarta, Indonesia', phone: '0815 1026 6501' },
     to: { name: '', email: '', address: '', phone: '' },
-
     invoice_date: '',
     due_date: '',
     bank_info: { no: '598 009 0819', name: 'BCA a/n Fransiska Susan Margono' },
     notes: '',
 });
 const clientOptions = ref([]);
+const itemOptions = ref([]);
 const currency_list = ref([]);
 const selected_currency = ref({ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' });
 const tax_type_list = ref([]);
@@ -366,7 +371,10 @@ const discount_list = ref([]);
 const selected_discount = ref({ key: 'None', value: null, type: '' });
 
 onMounted(async () => {
-    //set default data
+    await fetchClients();
+    await fetchItems();
+
+    // set default data
     items.value.push({ id: 1, title: '', description: '', rate: 0, quantity: 0, amount: 100, is_tax: false });
 
     let dt = new Date();
@@ -374,12 +382,12 @@ onMounted(async () => {
     dt.setDate(dt.getDate() + 5);
     params.value.due_date = dt;
 
-    //currency list
+    // currency list
     currency_list.value = [
         { key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' },
     ];
 
-    //tax type list
+    // tax type list
     tax_type_list.value = [
         { key: 'Deducted', value: 10 },
         { key: 'Per Item', value: 5 },
@@ -387,14 +395,12 @@ onMounted(async () => {
         { key: 'None', value: null },
     ];
 
-    //discount list
+    // discount list
     discount_list.value = [
         { key: 'Percent', value: 10, type: 'percent' },
         { key: 'Flat Amount', value: 25, type: 'amount' },
         { key: 'None', value: null, type: '' },
     ];
-
-    await fetchClients();
 });
 
 const fetchClients = async () => {
@@ -411,6 +417,24 @@ const fetchClients = async () => {
     }
 };
 
+const fetchItems = async () => {
+    try {
+        const response = await axios.get('/api/items');
+        console.log('API Response:', response.data); // Log API response
+        itemOptions.value = response.data.map(item => {
+            console.log('Mapping item:', item); // Log each item being mapped
+            return {
+                value: item.item_code,  // Ensure correct property name
+                text: item.item_desc,   // Ensure correct property name
+                price: item.item_price, // Ensure correct property name
+            };
+        });
+        console.log('Mapped itemOptions:', itemOptions.value); // Log mapped items
+    } catch (error) {
+        console.error('Error fetching items:', error);
+    }
+};
+
 watch(
     () => params.value.to.name,
     (newValue) => {
@@ -422,6 +446,20 @@ watch(
             params.value.to.address = '';
             params.value.to.phone = '';
         }
+    }
+);
+
+watch(
+    () => items.value.map(item => item.title),
+    (newValues) => {
+        newValues.forEach((newValue, index) => {
+            const selectedItem = itemOptions.value.find(item => item.value === newValue);
+            if (selectedItem) {
+                items.value[index].rate = selectedItem.price;
+            } else {
+                items.value[index].rate = 0;
+            }
+        });
     }
 );
 
@@ -444,4 +482,5 @@ const remove_item = (item) => {
 const totalAmount = computed(() => {
     return items.value.reduce((total, item) => total + item.amount, 0);
 });
+
 </script>
