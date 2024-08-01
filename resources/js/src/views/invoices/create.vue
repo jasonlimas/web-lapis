@@ -29,7 +29,7 @@
                                                 <input ref="fl_profile" type="file" class="d-none" accept="image/*" @change="change_file" />
                                                 <img
                                                     v-if="selected_file"
-                                                    :src="selected_file"
+                                                    :src="selected_file ? selected_file : require('@/assets/images/user-profile.jpeg')"
                                                     alt="profile"
                                                     class="profile-preview"
                                                     @click="$refs.fl_profile.click()"
@@ -155,10 +155,10 @@
                                             <table class="table table-bordered item-table">
                                                 <thead>
                                                     <tr>
-                                                        <th class="col-1 "></th>
-                                                        <th class="col-3 ">Description</th>
-                                                        <th class="col-2 ">Rate</th>
-                                                        <th class="col-1 ">Qty</th>
+                                                        <th class="col-1"></th>
+                                                        <th class="col-3">Description</th>
+                                                        <th class="col-2">Rate</th>
+                                                        <th class="col-1">Qty</th>
                                                         <th class="col-2 text-center">Total</th>
                                                     </tr>
                                                 </thead>
@@ -189,10 +189,10 @@
                                                             </ul>
                                                         </td>
                                                         <td class="description">
-                                                            <select v-model="item.title" class="form-control form-control-sm" required>
+                                                            <select v-model="item.title" class="form-control form-control-sm" @change="updateItemPrice(item)">
                                                                 <option disabled value="">Select Item</option>
-                                                                <option v-for="option in itemOptions" :key="option.value" :value="option.value">
-                                                                    {{ option.text }}
+                                                                <option v-for="itemOption in itemOptions" :key="itemOption.value" :value="itemOption.value">
+                                                                    {{ itemOption.text }}
                                                                 </option>
                                                             </select>
                                                         </td>
@@ -204,7 +204,7 @@
                                                         </td>
                                                         <td class="text-center amount">
                                                             <span class="editable-amount mt-2">
-                                                                <span class="currency">Rp </span> <span class="amount">{{ item.amount }}</span>
+                                                                <span class="currency">Rp </span> <span class="amount">{{ item.total }}</span>
                                                             </span>
                                                         </td>
                                                     </tr>
@@ -371,23 +371,18 @@ const discount_list = ref([]);
 const selected_discount = ref({ key: 'None', value: null, type: '' });
 
 onMounted(async () => {
-    await fetchClients();
-    await fetchItems();
-
-    // set default data
-    items.value.push({ id: 1, title: '', description: '', rate: 0, quantity: 0, amount: 100, is_tax: false });
+    // Set default data
+    items.value.push({ id: 1, title: '', description: '', rate: 0, quantity: 0, total: 0, is_tax: false });
 
     let dt = new Date();
     params.value.invoice_date = JSON.parse(JSON.stringify(dt));
     dt.setDate(dt.getDate() + 5);
     params.value.due_date = dt;
 
-    // currency list
-    currency_list.value = [
-        { key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' },
-    ];
+    // Currency list
+    currency_list.value = [{ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' }];
 
-    // tax type list
+    // Tax type list
     tax_type_list.value = [
         { key: 'Deducted', value: 10 },
         { key: 'Per Item', value: 5 },
@@ -395,12 +390,15 @@ onMounted(async () => {
         { key: 'None', value: null },
     ];
 
-    // discount list
+    // Discount list
     discount_list.value = [
         { key: 'Percent', value: 10, type: 'percent' },
         { key: 'Flat Amount', value: 25, type: 'amount' },
         { key: 'None', value: null, type: '' },
     ];
+
+    await fetchClients();
+    await fetchItems();
 });
 
 const fetchClients = async () => {
@@ -420,16 +418,11 @@ const fetchClients = async () => {
 const fetchItems = async () => {
     try {
         const response = await axios.get('/api/items');
-        console.log('API Response:', response.data); // Log API response
-        itemOptions.value = response.data.map(item => {
-            console.log('Mapping item:', item); // Log each item being mapped
-            return {
-                value: item.item_code,  // Ensure correct property name
-                text: item.item_desc,   // Ensure correct property name
-                price: item.item_price, // Ensure correct property name
-            };
-        });
-        console.log('Mapped itemOptions:', itemOptions.value); // Log mapped items
+        itemOptions.value = response.data.map(item => ({
+            value: item.item_code,
+            text: item.item_desc,
+            price: item.item_price,
+        }));
     } catch (error) {
         console.error('Error fetching items:', error);
     }
@@ -450,18 +443,21 @@ watch(
 );
 
 watch(
-    () => items.value.map(item => item.title),
-    (newValues) => {
-        newValues.forEach((newValue, index) => {
-            const selectedItem = itemOptions.value.find(item => item.value === newValue);
-            if (selectedItem) {
-                items.value[index].rate = selectedItem.price;
-            } else {
-                items.value[index].rate = 0;
-            }
+    items,
+    (newItems) => {
+        newItems.forEach(item => {
+            item.total = item.rate * item.quantity;
         });
-    }
+    },
+    { deep: true }
 );
+
+const updateItemPrice = (item) => {
+    const selectedItem = itemOptions.value.find(option => option.value === item.title);
+    if (selectedItem) {
+        item.rate = selectedItem.price;
+    }
+};
 
 const change_file = (event) => {
     selected_file.value = URL.createObjectURL(event.target.files[0]);
@@ -472,7 +468,7 @@ const add_item = () => {
     if (items.value && items.value.length) {
         max_id = items.value.reduce((max, character) => (character.id > max ? character.id : max), items.value[0].id);
     }
-    items.value.push({ id: max_id + 1, title: '', description: '', rate: 0, quantity: 0, amount: 0, is_tax: false });
+    items.value.push({ id: max_id + 1, title: '', description: '', rate: 0, quantity: 0, total: 0, is_tax: false });
 };
 
 const remove_item = (item) => {
@@ -480,7 +476,6 @@ const remove_item = (item) => {
 };
 
 const totalAmount = computed(() => {
-    return items.value.reduce((total, item) => total + item.amount, 0);
+    return items.value.reduce((total, item) => total + item.total, 0);
 });
-
 </script>
