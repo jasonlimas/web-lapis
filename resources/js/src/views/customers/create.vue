@@ -32,6 +32,9 @@
                             <div class="form-group">
                                 <textarea v-model="cust_addr" class="form-control" placeholder="Alamat *" rows="4" required></textarea>
                             </div>
+                            <div class="form-group">
+                                <input v-model="cust_phone" type="text" class="form-control" placeholder="Nomor customer *" required />
+                            </div>
                             <small id="emailHelp2" class="block text-muted">*Harus diisi</small>
                             <div class="form-group ps-0 mt-3"></div>
                             <button type="submit" class="btn btn-primary mt-3 me-2">Tambah</button>
@@ -53,6 +56,7 @@ import { useRouter } from 'vue-router';
 const cust_code = ref('');
 const cust_desc = ref('');
 const cust_addr = ref('');
+const cust_phone = ref('');
 const router = useRouter();
 
 const submitForm = async () => {
@@ -61,6 +65,7 @@ const submitForm = async () => {
             cust_code: cust_code.value,
             cust_desc: cust_desc.value,
             cust_addr: cust_addr.value,
+            cust_phone: cust_phone.value
         });
         Swal.fire({
             title: 'Sukses',

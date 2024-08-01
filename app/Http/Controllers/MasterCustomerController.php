@@ -20,6 +20,7 @@ class MasterCustomerController extends Controller
             'cust_code' => 'required|max:10|unique:master_customers,cust_code',
             'cust_desc' => 'required|max:25',
             'cust_addr' => 'required|max:255',
+            'cust_phone' => 'required|max:20'
         ]);
 
         $customer = MasterCustomer::create($validated);
