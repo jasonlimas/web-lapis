@@ -520,8 +520,39 @@ const submitForm = async () => {
         console.error('Error creating sales order:', error);
         if (error.response && error.response.status === 422) {
             console.error('Validation errors:', error.response.data.errors);
+            const errors = error.response.data.errors;
+            let errorMessages = '';
+            for (const key in errors) {
+                if (errors.hasOwnProperty(key)) {
+                    errorMessages += `${errors[key].join(', ')}\n`;
+                }
+            }
+            const toast =  window.Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                padding: '2em'
+            });
+            toast.fire({
+                icon: 'error',
+                title: errorMessages,
+                padding: '2em'
+            });
+        } else {
+            const toast =  window.Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                padding: '2em'
+            });
+            toast.fire({
+                icon: 'error',
+                title: 'Error creating sales order: ' + error.response.data.message,
+                padding: '2em'
+            });
         }
-        alert('Error creating sales order: ' + error.response.data.message);
     }
 };
 

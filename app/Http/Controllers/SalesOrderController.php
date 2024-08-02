@@ -24,6 +24,22 @@ class SalesOrderController extends Controller
             'items.*.qty' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'items.*.total' => 'required|integer|min:0',
+        ], [
+            'invoice_no.required' => 'Invoice number harus diisi',
+            'invoice_no.unique' => 'Nomor invoice harus unik.',
+            'so_cust.required' => 'Customer harus diisi.',
+            'so_cust.exists' => 'Customer tidak ditemukan.',
+            'so_ord_date.required' => 'Order date harus diisi.',
+            'so_total.required' => 'Total amount harus diisi.',
+            'items.required' => 'Minimal satu item harus terisi.',
+            'items.*.item_id.required' => 'Item ID harus diisi.',
+            'items.*.item_id.exists' => 'Item tidak ditemukan.',
+            'items.*.qty.required' => 'Quantity harus diisi.',
+            'items.*.qty.min' => 'Quantity setidaknya harus 1.',
+            'items.*.price.required' => 'Harga harus diisi.',
+            'items.*.price.min' => 'Harga harus lebih dari 0.',
+            'items.*.total.required' => 'Total is required',
+            'items.*.total.min' => 'Total harus lebih dari 0.',
         ]);
 
         if ($validator->fails()) {
@@ -33,24 +49,18 @@ class SalesOrderController extends Controller
         DB::beginTransaction();
 
         try {
-            // Fetch the customer ID based on the cust_code
-            $customer = MasterCustomer::where('cust_code', $request->so_cust)->first();
-            if (!$customer) {
-                throw new \Exception('Customer not found');
-            }
-
             $salesOrder = SalesOrder::create([
                 'so_nbr' => $request->invoice_no,
-                'so_cust' => $customer->id,
+                'so_cust' => $request->so_cust,
                 'so_ord_date' => $request->so_ord_date,
                 'so_status' => 'Active',  // Assuming you have a status field
                 'so_total' => $request->so_total,
             ]);
 
-            foreach ($request->items as $index => $item) {
+            foreach ($request->items as $item) {
                 SalesOrderDetails::create([
                     'so_mstr_id' => $salesOrder->id,
-                    'line' => $index + 1,
+                    'line' => $item['id'],
                     'item_id' => $item['item_id'],
                     'qty' => $item['qty'],
                     'price' => $item['price'],
