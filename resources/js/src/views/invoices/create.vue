@@ -335,6 +335,8 @@
 <script setup>
 import { onMounted, ref, computed, watch } from 'vue';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import { useRouter } from 'vue-router';
 import '@/assets/sass/apps/invoice-add.scss';
 
 // flatpickr
@@ -345,6 +347,7 @@ import '@/assets/sass/forms/custom-flatpickr.css';
 import { useMeta } from '@/composables/use-meta';
 useMeta({ title: 'Invoice Add' });
 
+const router = useRouter();
 const items = ref([]);
 const selected_file = ref(null);
 const params = ref({
@@ -506,7 +509,13 @@ const submitForm = async () => {
         };
 
         const response = await axios.post('/api/sales-orders', payload);
-        alert('Sales order created successfully!');
+        Swal.fire({
+            title: 'Sukses',
+            text: 'Invoice berhasil ditambahkan!',
+            icon: 'success',
+        }).then(() => {
+            router.push('/invoices');
+        });
     } catch (error) {
         console.error('Error creating sales order:', error);
         if (error.response && error.response.status === 422) {
