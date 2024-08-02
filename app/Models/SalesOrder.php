@@ -17,6 +17,8 @@ class SalesOrder extends Model
         'so_total'
     ];
 
+    protected $dates = ['created_at', 'updated_at', 'deleted_at'];
+
     public function customer()
     {
         return $this->belongsTo(MasterCustomer::class, 'so_cust');

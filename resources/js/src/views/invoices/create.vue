@@ -432,7 +432,7 @@ const fetchItems = async () => {
 const fetchNextInvoiceNumber = async () => {
     try {
         const response = await axios.get('/api/next-invoice-number');
-        console.log('Fetched Invoice Number:', response.data); // Log the response
+        console.log('Fetched Invoice Number:', response.data);
         nextInvoiceNumber.value = response.data.nextInvoiceNumber;
     } catch (error) {
         console.error('Error fetching next invoice number:', error);

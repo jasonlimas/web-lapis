@@ -68,28 +68,29 @@ class SalesOrderController extends Controller
         }
     }
 
-
     public function getNextInvoiceNumber()
     {
         $currentMonth = date('m');
-        $currentYear = date('y');
+        $currentYear = date('Y');
 
-        // Fetch the last invoice number for the current month and year
-        $lastInvoice = SalesOrder::whereMonth('created_at', $currentMonth)
-            ->whereYear('created_at', $currentYear)
-            ->orderBy('id', 'desc')
-            ->first();
+        Log::info('Current Month:', ['currentMonth' => $currentMonth]);
+        Log::info('Current Year:', ['currentYear' => $currentYear]);
 
-        if ($lastInvoice) {
-            // Extract the invoice number part before the slash
-            $lastInvoiceNumber = explode('/', $lastInvoice->so_nbr)[0];
-            $nextNumber = (int)$lastInvoiceNumber + 1;
-        } else {
-            $nextNumber = 1;
-        }
+        // Run the raw SQL query to fetch the last invoice
+        $query = "SELECT * FROM sales_orders WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? AND deleted_at IS NULL ORDER BY id DESC";
+        $bindings = [$currentMonth, $currentYear];
+        $lastInvoice = DB::select($query, $bindings);
 
-        // Format the next invoice number
-        $nextInvoiceNumber = $nextNumber . '/' . $currentMonth . '/' . $currentYear;
+        Log::info('Last Invoice Query:', ['query' => $query]);
+        Log::info('Last Invoice Bindings:', ['bindings' => $bindings]);
+        Log::info('Last Invoice Result:', ['invoice' => $lastInvoice]);
+
+        // Ensure we are processing the correct result format
+        $nextNumber = !empty($lastInvoice) ? ((int)explode('/', $lastInvoice[0]->so_nbr)[0] + 1) : 1;
+
+        $nextInvoiceNumber = $nextNumber . '/' . $currentMonth . '/' . substr($currentYear, -2);
+
+        Log::info('Next Invoice Number:', ['nextInvoiceNumber' => $nextInvoiceNumber]);
 
         return response()->json(['nextInvoiceNumber' => $nextInvoiceNumber]);
     }
