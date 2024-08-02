@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SalesOrder;
 use App\Models\SalesOrderDetails;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -36,4 +37,20 @@ class SalesOrderController extends Controller
         return response()->json(['message' => 'Sales order created successfully.']);
     }
 
+    public function getNextInvoiceNumber()
+    {
+        $currentMonth = date('m');
+        $currentYear = date('y');
+
+        $lastInvoice = SalesOrder::whereMonth('created_at', $currentMonth)
+            ->whereYear('created_at', $currentYear)
+            ->orderBy('id', 'desc')
+            ->first();
+
+        $nextNumber = $lastInvoice ? ((int)explode('/', $lastInvoice->so_nbr)[0] + 1) : 1;
+
+        $nextInvoiceNumber = $nextNumber . '/' . $currentMonth . '/' . $currentYear;
+
+        return response()->json(['nextInvoiceNumber' => $nextInvoiceNumber]);
+    }
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\MasterCustomerController;
 use App\Http\Controllers\MasterItemController;
+use App\Http\Controllers\SalesOrderController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -29,3 +30,6 @@ Route::post('/customers', [MasterCustomerController::class, 'store']);
 Route::delete('/customers/{id}', [MasterCustomerController::class, 'destroy']);
 Route::get('/customers/{id}', [MasterCustomerController::class, 'show']);
 Route::put('/customers/{id}', [MasterCustomerController::class, 'update']);
+
+// Invoices
+Route::get('/next-invoice-number', [SalesOrderController::class, 'getNextInvoiceNumber']);

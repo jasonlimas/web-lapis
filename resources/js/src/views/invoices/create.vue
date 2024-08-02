@@ -137,7 +137,7 @@
                                             <div class="col-md-3">
                                                 <div class="form-group mb-4">
                                                     <label for="number">Invoice Number</label>
-                                                    <input type="text" v-model="params.invoice_no" id="number" class="form-control form-control-sm" placeholder="#0001" disabled />
+                                                    <input type="text" v-model="params.invoice_no" id="number" class="form-control form-control-sm" placeholder="Loading..." disabled />
                                                 </div>
                                             </div>
 
@@ -369,6 +369,7 @@ const tax_type_list = ref([]);
 const selected_tax_type = ref({ key: 'None', value: null });
 const discount_list = ref([]);
 const selected_discount = ref({ key: 'None', value: null, type: '' });
+const nextInvoiceNumber = ref('');
 
 onMounted(async () => {
     // Set default data
@@ -399,6 +400,10 @@ onMounted(async () => {
 
     await fetchClients();
     await fetchItems();
+    await fetchNextInvoiceNumber();
+
+    console.log('Setting Invoice Number:', nextInvoiceNumber.value); // Log the next invoice number
+    params.value.invoice_no = nextInvoiceNumber.value; // Set the next invoice number
 });
 
 const fetchClients = async () => {
@@ -425,6 +430,16 @@ const fetchItems = async () => {
         }));
     } catch (error) {
         console.error('Error fetching items:', error);
+    }
+};
+
+const fetchNextInvoiceNumber = async () => {
+    try {
+        const response = await axios.get('/api/next-invoice-number');
+        console.log('Fetched Invoice Number:', response.data); // Log the response
+        nextInvoiceNumber.value = response.data.nextInvoiceNumber;
+    } catch (error) {
+        console.error('Error fetching next invoice number:', error);
     }
 };
 
