@@ -33,3 +33,4 @@ Route::put('/customers/{id}', [MasterCustomerController::class, 'update']);
 
 // Invoices
 Route::get('/next-invoice-number', [SalesOrderController::class, 'getNextInvoiceNumber']);
+Route::post('/sales-orders', [SalesOrderController::class, 'store']);

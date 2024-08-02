@@ -29,7 +29,7 @@ class SalesOrder extends Model
 
     public function updateTotalAmount()
     {
-        $this->total_amount = $this->details->sum(function ($detail) {
+        $this->so_total = $this->details->sum(function ($detail) {
             return $detail->qty * $detail->price;
         });
         $this->save();

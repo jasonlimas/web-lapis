@@ -58,10 +58,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <div class="invoice-title">
-                                            <input type="text" v-model="params.title" class="form-control" placeholder="Invoice Label" />
-                                        </div>
                                     </div>
 
                                     <div class="invoice-detail-header">
@@ -252,7 +248,7 @@
                                                     <div class="invoice-totals-row invoice-summary-balance-due">
                                                         <div class="invoice-summary-label">Total</div>
                                                         <div class="invoice-summary-value">
-                                                            <div class="balance-due-amount"><span class="currency">$</span><span>{{ totalAmount }}</span></div>
+                                                            <div class="balance-due-amount"><span class="currency">Rp </span><span>{{ totalAmount }}</span></div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -323,7 +319,7 @@
                                 <div class="invoice-action-btn">
                                     <div class="row">
                                         <div class="col-xl-12 col-md-4">
-                                            <a href="javascript:;" class="btn btn-success btn-download">Tambah</a>
+                                            <button type="button" class="btn btn-success btn-download" @click="submitForm">Tambah</button>
                                         </div>
                                     </div>
                                 </div>
@@ -493,4 +489,31 @@ const remove_item = (item) => {
 const totalAmount = computed(() => {
     return items.value.reduce((total, item) => total + item.total, 0);
 });
+
+const submitForm = async () => {
+    try {
+        const payload = {
+            invoice_no: params.value.invoice_no,
+            so_cust: params.value.to.name, // Ensure this holds the correct customer code
+            so_ord_date: params.value.invoice_date,
+            so_total: totalAmount.value,
+            items: items.value.map(item => ({
+                item_id: item.title,
+                qty: item.quantity,
+                price: item.rate,
+                total: item.total,
+            })),
+        };
+
+        const response = await axios.post('/api/sales-orders', payload);
+        alert('Sales order created successfully!');
+    } catch (error) {
+        console.error('Error creating sales order:', error);
+        if (error.response && error.response.status === 422) {
+            console.error('Validation errors:', error.response.data.errors);
+        }
+        alert('Error creating sales order: ' + error.response.data.message);
+    }
+};
+
 </script>
