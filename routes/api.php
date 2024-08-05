@@ -35,3 +35,4 @@ Route::put('/customers/{id}', [MasterCustomerController::class, 'update']);
 Route::get('/next-invoice-number', [SalesOrderController::class, 'getNextInvoiceNumber']);
 Route::get('/invoices', [SalesOrderController::class, 'index']);
 Route::post('/sales-orders', [SalesOrderController::class, 'store']);
+Route::delete('/invoices/{id}', [SalesOrderController::class, 'destroy']);

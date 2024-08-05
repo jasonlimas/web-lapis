@@ -111,6 +111,24 @@ class SalesOrderController extends Controller
         }
     }
 
+    public function destroy($id)
+    {
+        DB::beginTransaction();
+
+        try {
+            $salesOrder = SalesOrder::findOrFail($id);
+            $salesOrder->delete(); // Soft delete, assuming you have soft delete enabled on the model
+
+            DB::commit();
+
+            return response()->json(['message' => 'Sales order deleted successfully']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Error deleting sales order', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Error deleting sales order', 'error' => $e->getMessage()], 500);
+        }
+    }
+
     public function getNextInvoiceNumber()
     {
         $currentMonth = date('m');
