@@ -6,7 +6,7 @@
                     <div class="page-header">
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="javascript:;">Apps</a></li>
+                                <li class="breadcrumb-item"><a href="javascript:;">Invoices</a></li>
                                 <li class="breadcrumb-item active" aria-current="page"><span>Invoice List</span></li>
                             </ol>
                         </nav>
@@ -61,15 +61,9 @@
                                     Hapus
                                 </button>
                             </template>
-                            <!-- <template #h__id>
-                                <div class="checkbox-outline-primary custom-control custom-checkbox">
-                                    <input variant="primary" type="checkbox" class="custom-control-input" :id="props.row.id" />
-                                    <label class="custom-control-label" :for="props.row.id"></label>
-                                </div>
-                            </template> -->
                             <template #id="props">
                                 <div class="checkbox-outline-primary custom-control custom-checkbox">
-                                    <input variant="primary" type="checkbox" class="custom-control-input" :id="'chk' + props.row.id" @change="selcted_row(props.row.id)" />
+                                    <input variant="primary" type="checkbox" class="custom-control-input" :id="'chk' + props.row.id" @change="selected_row(props.row.id)" />
                                     <label class="custom-control-label" :for="'chk' + props.row.id"></label>
                                 </div>
                             </template>
@@ -185,6 +179,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import axios from 'axios';
 import '@/assets/sass/apps/invoice-list.scss';
 
 import { useMeta } from '@/composables/use-meta';
@@ -223,33 +218,20 @@ onMounted(() => {
     bind_data();
 });
 
-const bind_data = () => {
-    items.value = [
-        {
-            id: 1,
-            invoice: '081451',
-            name: 'Laurie Fox',
-            date: '15 Dec 2020',
-            amount: '2275.45',
-            status: { key: 'Paid', class: 'success' },
-        },
-        {
-            id: 2,
-            invoice: '081452',
-            name: 'Alexander Gray',
-            date: '20 Dec 2020',
-            amount: '1044.00',
-            status: { key: 'Paid', class: 'success' },
-        },
-        {
-            id: 3,
-            invoice: '081681',
-            name: 'James Taylor',
-            date: '27 Dec 2020',
-            amount: '20.00',
-            status: { key: 'Pending', class: 'danger' },
-        },
-    ];
+const bind_data = async () => {
+    try {
+        const response = await axios.get('/api/invoices');
+        items.value = response.data.map(invoice => ({
+            id: invoice.id,
+            invoice: invoice.so_nbr,
+            name: invoice.customer_name,
+            date: new Date(invoice.so_ord_date).toLocaleDateString('en-US'),
+            amount: invoice.so_total,
+            status: { key: invoice.so_status, class: invoice.so_status === 'Paid' ? 'success' : 'danger' },
+        }));
+    } catch (error) {
+        console.error('Error fetching invoices:', error);
+    }
 };
 
 const delete_row = (item) => {
@@ -263,7 +245,7 @@ const delete_row = (item) => {
 };
 
 //checkbox selection
-const selcted_row = (val) => {
+const selected_row = (val) => {
     selected_rows.value.push(val);
     return;
 };

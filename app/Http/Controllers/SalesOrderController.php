@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Validator;
 
 class SalesOrderController extends Controller
 {
+    public function index()
+    {
+        $invoices = SalesOrder::with('customer') // Assuming you have a relationship with the customer
+            ->get()
+            ->map(function ($invoice) {
+                return [
+                    'id' => $invoice->id,
+                    'so_nbr' => $invoice->so_nbr,
+                    'customer_name' => $invoice->customer->cust_desc, // Adjust according to your column name
+                    'so_ord_date' => $invoice->so_ord_date,
+                    'so_total' => $invoice->so_total,
+                    'so_status' => $invoice->so_status,
+                ];
+            });
+
+        return response()->json($invoices);
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
