@@ -365,9 +365,7 @@ const itemOptions = ref([]);
 const currency_list = ref([]);
 const selected_currency = ref({ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' });
 const tax_type_list = ref([]);
-const selected_tax_type = ref({ key: 'None', value: null });
 const discount_list = ref([]);
-const selected_discount = ref({ key: 'None', value: null, type: '' });
 const nextInvoiceNumber = ref('');
 
 onMounted(async () => {
@@ -381,21 +379,6 @@ onMounted(async () => {
 
     // Currency list
     currency_list.value = [{ key: 'IDR - Indonesian Rupiah', thumb: 'flags/idr.png' }];
-
-    // Tax type list
-    tax_type_list.value = [
-        { key: 'Deducted', value: 10 },
-        { key: 'Per Item', value: 5 },
-        { key: 'On Total', value: 25 },
-        { key: 'None', value: null },
-    ];
-
-    // Discount list
-    discount_list.value = [
-        { key: 'Percent', value: 10, type: 'percent' },
-        { key: 'Flat Amount', value: 25, type: 'amount' },
-        { key: 'None', value: null, type: '' },
-    ];
 
     await fetchClients();
     await fetchItems();
@@ -500,7 +483,15 @@ const submitForm = async () => {
             so_cust: params.value.to.name, // Ensure this holds the correct customer code
             so_ord_date: params.value.invoice_date,
             so_total: totalAmount.value,
-            items: items.value.map(item => ({
+            sender_name: params.value.from.name,
+            sender_email: params.value.from.email,
+            sender_address: params.value.from.address,
+            sender_phone: params.value.from.phone,
+            bank_account_no: params.value.bank_info.no,
+            bank_name: params.value.bank_info.name,
+            notes: params.value.notes,
+            items: items.value.map((item, index) => ({
+                line: index + 1, // Ensure this holds the correct line number
                 item_id: item.title,
                 qty: item.quantity,
                 price: item.rate,

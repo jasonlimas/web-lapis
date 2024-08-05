@@ -14,7 +14,14 @@ class SalesOrder extends Model
         'so_cust',
         'so_ord_date',
         'so_status',
-        'so_total'
+        'so_total',
+        'sender_name',
+        'sender_email',
+        'sender_address',
+        'sender_phone',
+        'bank_account_no',
+        'bank_name',
+        'notes',
     ];
 
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];

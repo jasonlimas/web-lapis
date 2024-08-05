@@ -19,7 +19,14 @@ class SalesOrderController extends Controller
             'so_cust' => 'required|exists:master_customers,cust_code',
             'so_ord_date' => 'required|date',
             'so_total' => 'required|integer',
+            'sender_name' => 'required|string|max:255',
+            'sender_email' => 'required|string|email|max:255',
+            'sender_address' => 'required|string|max:255',
+            'sender_phone' => 'required|string|max:20',
+            'bank_account_no' => 'required|string|max:255',
+            'bank_name' => 'required|string|max:255',
             'items' => 'required|array|min:1',
+            'items.*.line' => 'required|integer',
             'items.*.item_id' => 'required|exists:master_items,item_code',
             'items.*.qty' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
@@ -32,6 +39,7 @@ class SalesOrderController extends Controller
             'so_ord_date.required' => 'Order date harus diisi.',
             'so_total.required' => 'Total amount harus diisi.',
             'items.required' => 'Minimal satu item harus terisi.',
+            'items.*.line.required' => 'Line harus diisi.',
             'items.*.item_id.required' => 'Item ID harus diisi.',
             'items.*.item_id.exists' => 'Item tidak ditemukan.',
             'items.*.qty.required' => 'Quantity harus diisi.',
@@ -55,12 +63,19 @@ class SalesOrderController extends Controller
                 'so_ord_date' => $request->so_ord_date,
                 'so_status' => 'Active',  // Assuming you have a status field
                 'so_total' => $request->so_total,
+                'sender_name' => $request->sender_name,
+                'sender_email' => $request->sender_email,
+                'sender_address' => $request->sender_address,
+                'sender_phone' => $request->sender_phone,
+                'bank_account_no' => $request->bank_account_no,
+                'bank_name' => $request->bank_name,
+                'notes' => $request->notes,
             ]);
 
             foreach ($request->items as $item) {
                 SalesOrderDetails::create([
                     'so_mstr_id' => $salesOrder->id,
-                    'line' => $item['id'],
+                    'line' => $item['line'],
                     'item_id' => $item['item_id'],
                     'qty' => $item['qty'],
                     'price' => $item['price'],
