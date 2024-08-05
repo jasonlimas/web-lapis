@@ -137,8 +137,8 @@ class SalesOrderController extends Controller
         Log::info('Current Month:', ['currentMonth' => $currentMonth]);
         Log::info('Current Year:', ['currentYear' => $currentYear]);
 
-        // Run the raw SQL query to fetch the last invoice
-        $query = "SELECT * FROM sales_orders WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? AND deleted_at IS NULL ORDER BY id DESC";
+        // Include soft-deleted invoices in the query
+        $query = "SELECT * FROM sales_orders WHERE MONTH(created_at) = ? AND YEAR(created_at) = ? ORDER BY id DESC";
         $bindings = [$currentMonth, $currentYear];
         $lastInvoice = DB::select($query, $bindings);
 
@@ -155,4 +155,5 @@ class SalesOrderController extends Controller
 
         return response()->json(['nextInvoiceNumber' => $nextInvoiceNumber]);
     }
+
 }
