@@ -32,9 +32,11 @@ class SalesOrderController extends Controller
 
     public function store(Request $request)
     {
+        Log::info('Payload received for creating sales order:', $request->all());
+
         $validator = Validator::make($request->all(), [
             'invoice_no' => 'required|string|unique:sales_orders,so_nbr',
-            'so_cust' => 'required|exists:master_customers,cust_code',
+            'so_cust' => 'required|exists:master_customers,id', // Ensure this references the correct column
             'so_ord_date' => 'required|date',
             'so_total' => 'required|integer',
             'sender_name' => 'required|string|max:255',
@@ -43,29 +45,13 @@ class SalesOrderController extends Controller
             'sender_phone' => 'required|string|max:20',
             'bank_account_no' => 'required|string|max:255',
             'bank_name' => 'required|string|max:255',
+            'notes' => 'nullable|string',
             'items' => 'required|array|min:1',
             'items.*.line' => 'required|integer',
             'items.*.item_id' => 'required|exists:master_items,item_code',
             'items.*.qty' => 'required|integer|min:1',
             'items.*.price' => 'required|integer|min:0',
             'items.*.total' => 'required|integer|min:0',
-        ], [
-            'invoice_no.required' => 'Invoice number harus diisi',
-            'invoice_no.unique' => 'Nomor invoice harus unik.',
-            'so_cust.required' => 'Customer harus diisi.',
-            'so_cust.exists' => 'Customer tidak ditemukan.',
-            'so_ord_date.required' => 'Order date harus diisi.',
-            'so_total.required' => 'Total amount harus diisi.',
-            'items.required' => 'Minimal satu item harus terisi.',
-            'items.*.line.required' => 'Line harus diisi.',
-            'items.*.item_id.required' => 'Item ID harus diisi.',
-            'items.*.item_id.exists' => 'Item tidak ditemukan.',
-            'items.*.qty.required' => 'Quantity harus diisi.',
-            'items.*.qty.min' => 'Quantity setidaknya harus 1.',
-            'items.*.price.required' => 'Harga harus diisi.',
-            'items.*.price.min' => 'Harga harus lebih dari 0.',
-            'items.*.total.required' => 'Total is required',
-            'items.*.total.min' => 'Total harus lebih dari 0.',
         ]);
 
         if ($validator->fails()) {

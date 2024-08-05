@@ -392,7 +392,7 @@ const fetchClients = async () => {
     try {
         const response = await axios.get('/api/customers');
         clientOptions.value = response.data.map(customer => ({
-            value: customer.cust_code,
+            value: customer.id, // Store the customer ID here
             text: customer.cust_desc,
             address: customer.cust_addr,
             phone: customer.cust_phone,
@@ -480,7 +480,7 @@ const submitForm = async () => {
     try {
         const payload = {
             invoice_no: params.value.invoice_no,
-            so_cust: params.value.to.name, // Ensure this holds the correct customer code
+            so_cust: params.value.to.name, // Ensure this holds the correct customer id
             so_ord_date: params.value.invoice_date,
             so_total: totalAmount.value,
             sender_name: params.value.from.name,
@@ -498,6 +498,8 @@ const submitForm = async () => {
                 total: item.total,
             })),
         };
+
+        console.log('Payload:', payload); // Debug log
 
         const response = await axios.post('/api/sales-orders', payload);
         Swal.fire({
@@ -546,5 +548,4 @@ const submitForm = async () => {
         }
     }
 };
-
 </script>
