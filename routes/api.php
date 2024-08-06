@@ -37,3 +37,4 @@ Route::get('/invoices', [SalesOrderController::class, 'index']);
 Route::post('/sales-orders', [SalesOrderController::class, 'store']);
 Route::delete('/invoices/{id}', [SalesOrderController::class, 'destroy']);
 Route::get('/invoices/{id}', [SalesOrderController::class, 'show']);
+Route::put('/invoices/{id}', [SalesOrderController::class, 'update']);

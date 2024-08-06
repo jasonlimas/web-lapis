@@ -135,6 +135,7 @@ class SalesOrderController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
+            'invoice_no' => 'required|string|unique:sales_orders,so_nbr,' . $id,
             'so_cust' => 'required|exists:master_customers,id',
             'so_ord_date' => 'required|date',
             'so_total' => 'required|integer',
@@ -151,6 +152,8 @@ class SalesOrderController extends Controller
             'items.*.price' => 'required|integer|min:0',
             'items.*.total' => 'required|integer|min:0',
         ], [
+            'invoice_no.required' => 'Invoice number harus diisi',
+            'invoice_no.unique' => 'Nomor invoice harus unik.',
             'so_cust.required' => 'Customer harus diisi.',
             'so_cust.exists' => 'Customer tidak ditemukan.',
             'so_ord_date.required' => 'Order date harus diisi.',
@@ -176,9 +179,10 @@ class SalesOrderController extends Controller
         try {
             $salesOrder = SalesOrder::findOrFail($id);
             $salesOrder->update([
+                'so_nbr' => $request->invoice_no,
                 'so_cust' => $request->so_cust,
                 'so_ord_date' => $request->so_ord_date,
-                'so_status' => 'Active',  // Assuming you have a status field
+                'so_status' => $salesOrder->so_status,
                 'so_total' => $request->so_total,
                 'sender_name' => $request->sender_name,
                 'sender_email' => $request->sender_email,
@@ -189,7 +193,10 @@ class SalesOrderController extends Controller
                 'notes' => $request->notes,
             ]);
 
-            $salesOrder->items()->delete(); // Assuming you want to delete and recreate items
+            // Delete existing details
+            SalesOrderDetails::where('so_mstr_id', $id)->delete();
+
+            // Insert new details
             foreach ($request->items as $item) {
                 SalesOrderDetails::create([
                     'so_mstr_id' => $salesOrder->id,
@@ -210,6 +217,7 @@ class SalesOrderController extends Controller
             return response()->json(['message' => 'Error updating sales order', 'error' => $e->getMessage()], 500);
         }
     }
+
 
     public function destroy($id)
     {

@@ -521,7 +521,7 @@ const submitForm = async () => {
             })),
         };
 
-        const response = await axios.put(`/api/sales-orders/${route.params.id}`, payload);
+        const response = await axios.put(`/api/invoices/${route.params.id}`, payload);
         Swal.fire({
             title: 'Sukses',
             text: 'Invoice berhasil diupdate!',
