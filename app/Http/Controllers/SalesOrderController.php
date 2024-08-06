@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\SalesOrder;
 use App\Models\SalesOrderDetails;
 use App\Models\MasterCustomer;
+use App\Models\MasterItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -200,14 +201,19 @@ class SalesOrderController extends Controller
             ]);
 
             // Delete existing details
-            SalesOrderDetails::where('so_mstr_id', $id)->delete();
+            $salesOrder->details()->delete();
 
-            // Insert new details
             foreach ($request->items as $item) {
+                // Fetch the item_id using item_code
+                $itemRecord = MasterItem::where('item_code', $item['item_id'])->first();
+                if (!$itemRecord) {
+                    throw new \Exception('Item not found: ' . $item['item_id']);
+                }
+
                 SalesOrderDetails::create([
                     'so_mstr_id' => $salesOrder->id,
                     'line' => $item['line'],
-                    'item_id' => $item['item_id'],
+                    'item_id' => $itemRecord->id, // Use item_id here
                     'qty' => $item['qty'],
                     'price' => $item['price'],
                     'total' => $item['total'],
