@@ -127,6 +127,7 @@ class SalesOrderController extends Controller
                     return [
                         'id' => $item->id,
                         'item_id' => $item->item_id,
+                        'item_desc' => $item->item->item_desc,
                         'price' => $item->price,
                         'qty' => $item->qty,
                         'total' => $item->total,

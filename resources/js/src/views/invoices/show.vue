@@ -90,16 +90,13 @@
                                                             <tbody>
                                                                 <tr v-for="item in items" :key="item.id">
                                                                     <td>
-                                                                        {{ item.id }}
-                                                                    </td>
-                                                                    <td>
                                                                         {{ item.title }}
                                                                     </td>
                                                                     <td>
                                                                         {{ item.quantity }}
                                                                     </td>
-                                                                    <td class="text-end">{{ item.price }}</td>
-                                                                    <td class="text-end">{{ item.total }}</td>
+                                                                    <td class="text-end">Rp {{ item.price }}</td>
+                                                                    <td class="text-end">Rp {{ item.total }}</td>
                                                                 </tr>
                                                             </tbody>
                                                         </table>
@@ -112,29 +109,11 @@
                                                         <div class="col-sm-7 col-12 order-sm-1 order-0">
                                                             <div class="text-sm-end">
                                                                 <div class="row">
-                                                                    <div class="col-sm-8 col-7">
-                                                                        <p class="">Sub Total:</p>
-                                                                    </div>
-                                                                    <div class="col-sm-4 col-5">
-                                                                        <p class="">{{ sub_total }}</p>
-                                                                    </div>
-                                                                    <div class="col-sm-8 col-7">
-                                                                        <p class="">Tax Amount:</p>
-                                                                    </div>
-                                                                    <div class="col-sm-4 col-5">
-                                                                        <p class="">$0</p>
-                                                                    </div>
-                                                                    <div class="col-sm-8 col-7">
-                                                                        <p class="discount-rate">Discount : <span class="discount-percentage">0%</span></p>
-                                                                    </div>
-                                                                    <div class="col-sm-4 col-5">
-                                                                        <p class="">$0</p>
-                                                                    </div>
                                                                     <div class="col-sm-8 col-7 grand-total-title">
                                                                         <h4 class="">Grand Total :</h4>
                                                                     </div>
                                                                     <div class="col-sm-4 col-5 grand-total-amount">
-                                                                        <h4 class="">{{ sub_total }}</h4>
+                                                                        <h4 class="">Rp {{ sub_total }}</h4>
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -160,9 +139,6 @@
                             <div class="invoice-actions-btn">
                                 <div class="invoice-action-btn">
                                     <div class="row">
-                                        <div class="col-xl-12 col-md-3 col-sm-6">
-                                            <a href="javascript:;" class="btn btn-primary btn-send">Send Invoice</a>
-                                        </div>
                                         <div class="col-xl-12 col-md-3 col-sm-6">
                                             <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="print()">Print</a>
                                         </div>
@@ -211,7 +187,6 @@ onMounted(() => {
 
 const bind_data = async () => {
     columns.value = [
-        { key: 'id', label: 'S.NO' },
         { key: 'title', label: 'ITEMS' },
         { key: 'quantity', label: 'QTY' },
         { key: 'price', label: 'PRICE', class: 'text-end' },
@@ -239,7 +214,7 @@ const bind_data = async () => {
 
         items.value = invoice.items.map(item => ({
             id: item.id,
-            title: item.item_id,
+            title: item.item_desc, // Ensure this is item_desc
             quantity: item.qty,
             price: item.price,
             total: item.total,
