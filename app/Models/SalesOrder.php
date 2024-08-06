@@ -30,12 +30,12 @@ class SalesOrder extends Model
 
     public function customer()
     {
-        return $this->belongsTo(MasterCustomer::class, 'so_cust');
+        return $this->belongsTo(MasterCustomer::class, 'so_cust', 'id');
     }
 
     public function details()
     {
-        return $this->hasMany(SalesOrderDetails::class, 'so_mstr_id');
+        return $this->hasMany(SalesOrderDetails::class, 'so_mstr_id', 'id');
     }
 
     public function updateTotalAmount()
