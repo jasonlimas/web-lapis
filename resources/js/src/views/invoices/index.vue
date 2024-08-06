@@ -129,7 +129,7 @@
 
                                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="pendingTask">
                                         <li>
-                                            <router-link href="javascript:void(0);" to="/apps/invoice/edit" class="dropdown-item action-edit"
+                                            <router-link href="javascript:void(0);" :to="`/invoices/edit/${props.row.id}`" class="dropdown-item action-edit"
                                                 ><svg
                                                     xmlns="http://www.w3.org/2000/svg"
                                                     width="24"
