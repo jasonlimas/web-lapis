@@ -313,18 +313,18 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="invoice-actions-btn">
-                                <div class="invoice-action-btn">
-                                    <div class="row">
-                                        <div class="col-xl-12 col-md-4">
-                                            <button type="button" class="btn btn-success btn-download" @click="submitForm">Tambah</button>
+                                <div class="invoice-actions-btn">
+                                    <div class="invoice-action-btn">
+                                        <div class="row">
+                                            <div class="col-xl-12 col-md-4 d-flex justify-content-center">
+                                                <button href="javascript:;" class="btn btn-success btn-download w-100" @click="submitForm" :disabled="isSubmitting">Tambah</button>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -367,6 +367,7 @@ const selected_currency = ref({ key: 'IDR - Indonesian Rupiah', thumb: 'flags/id
 const tax_type_list = ref([]);
 const discount_list = ref([]);
 const nextInvoiceNumber = ref('');
+const isSubmitting = ref(false);
 
 onMounted(async () => {
     // Set default data
@@ -477,10 +478,14 @@ const totalAmount = computed(() => {
 });
 
 const submitForm = async () => {
+    if (isSubmitting.value) return;
+
+    isSubmitting.value = true;
+
     try {
         const payload = {
             invoice_no: params.value.invoice_no,
-            so_cust: params.value.to.name, // Ensure this holds the correct customer id
+            so_cust: params.value.to.name, // This should now be the customer ID
             so_ord_date: params.value.invoice_date,
             so_total: totalAmount.value,
             sender_name: params.value.from.name,
@@ -498,8 +503,6 @@ const submitForm = async () => {
                 total: item.total,
             })),
         };
-
-        console.log('Payload:', payload); // Debug log
 
         const response = await axios.post('/api/sales-orders', payload);
         Swal.fire({
@@ -520,7 +523,7 @@ const submitForm = async () => {
                     errorMessages += `${errors[key].join(', ')}\n`;
                 }
             }
-            const toast =  window.Swal.mixin({
+            const toast = window.Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -533,7 +536,7 @@ const submitForm = async () => {
                 padding: '2em'
             });
         } else {
-            const toast =  window.Swal.mixin({
+            const toast = window.Swal.mixin({
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
@@ -546,6 +549,8 @@ const submitForm = async () => {
                 padding: '2em'
             });
         }
+    } finally {
+        isSubmitting.value = false;
     }
 };
 </script>

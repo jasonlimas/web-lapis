@@ -9,6 +9,8 @@ class SalesOrder extends Model
 {
     use SoftDeletes;
 
+    protected $table = 'sales_orders';
+
     protected $fillable = [
         'so_nbr',
         'so_cust',
