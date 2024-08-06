@@ -187,7 +187,7 @@
                                                         <td class="description">
                                                             <select v-model="item.title" class="form-control form-control-sm" @change="updateItemPrice(item)">
                                                                 <option disabled value="">Select Item</option>
-                                                                <option v-for="itemOption in itemOptions" :key="itemOption.value" :value="itemOption.value">
+                                                                <option v-for="itemOption in itemOptions" :key="itemOption.value" :value="itemOption.id">
                                                                     {{ itemOption.text }}
                                                                 </option>
                                                             </select>
@@ -384,7 +384,6 @@ onMounted(async () => {
     await fetchClients();
     await fetchItems();
     await fetchInvoice();
-
 });
 
 const fetchClients = async () => {
@@ -405,7 +404,8 @@ const fetchItems = async () => {
     try {
         const response = await axios.get('/api/items');
         itemOptions.value = response.data.map(item => ({
-            value: item.item_code,
+            id: item.id,
+            value: item.item_code, // Still using item_code to populate the dropdown
             text: item.item_desc,
             price: item.item_price,
         }));
@@ -432,6 +432,7 @@ const fetchInvoice = async () => {
         items.value = invoice.items.map(item => ({
             id: item.id,
             title: item.item_id,
+            description: item.item_desc, // Adding description to the item object
             rate: item.price,
             quantity: item.qty,
             total: item.total,
@@ -474,9 +475,10 @@ watch(
 );
 
 const updateItemPrice = (item) => {
-    const selectedItem = itemOptions.value.find(option => option.value === item.title);
+    const selectedItem = itemOptions.value.find(option => option.id === item.title); // Matching by ID
     if (selectedItem) {
         item.rate = selectedItem.price;
+        item.description = selectedItem.text; // Update description
     }
 };
 
@@ -520,7 +522,7 @@ const submitForm = async () => {
             notes: params.value.notes,
             items: items.value.map((item, index) => ({
                 line: index + 1, // Ensure this holds the correct line number
-                item_id: item.title,
+                item_id: item.title, // This should be the item ID now
                 qty: item.quantity,
                 price: item.rate,
                 total: item.total,
