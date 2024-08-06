@@ -116,6 +116,12 @@ class SalesOrderController extends Controller
                 'so_status' => $invoice->so_status,
                 'due_date' => $invoice->due_date,
                 'notes' => $invoice->notes,
+                'sender_name' => $invoice->sender_name,
+                'sender_email' => $invoice->sender_email,
+                'sender_address' => $invoice->sender_address,
+                'sender_phone' => $invoice->sender_phone,
+                'bank_account_no' => $invoice->bank_account_no,
+                'bank_name' => $invoice->bank_name,
                 'items' => $invoice->details->map(function ($item) {
                     return [
                         'id' => $item->id,

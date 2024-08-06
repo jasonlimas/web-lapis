@@ -354,11 +354,11 @@ const selected_file = ref(null);
 const params = ref({
     title: '',
     invoice_no: '',
-    from: { name: 'LapisKu Cakes', email: 'lapisku_cakes@yahoo.co.id', address: 'Jakarta, Indonesia', phone: '0815 1026 6501' },
+    from: { name: '', email: '', address: '', phone: '' },
     to: { name: '', email: '', address: '', phone: '' },
     invoice_date: '',
     due_date: '',
-    bank_info: { no: '598 009 0819', name: 'BCA a/n Fransiska Susan Margono' },
+    bank_info: { no: '', name: '' },
     notes: '',
 });
 const clientOptions = ref([]);
@@ -423,6 +423,12 @@ const fetchInvoice = async () => {
         params.value.invoice_date = new Date(invoice.so_ord_date);
         params.value.due_date = new Date(invoice.due_date);
         params.value.notes = invoice.notes;
+        params.value.from.name = invoice.sender_name;
+        params.value.from.email = invoice.sender_email;
+        params.value.from.address = invoice.sender_address;
+        params.value.from.phone = invoice.sender_phone;
+        params.value.bank_info.no = invoice.bank_account_no;
+        params.value.bank_info.name = invoice.bank_name;
         items.value = invoice.items.map(item => ({
             id: item.id,
             title: item.item_id,
