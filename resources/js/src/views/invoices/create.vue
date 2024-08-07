@@ -407,6 +407,7 @@ const fetchItems = async () => {
     try {
         const response = await axios.get('/api/items');
         itemOptions.value = response.data.map(item => ({
+            id: item.id,
             value: item.item_code,
             text: item.item_desc,
             price: item.item_price,

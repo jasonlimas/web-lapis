@@ -66,7 +66,7 @@ class SalesOrderController extends Controller
                 'so_nbr' => $request->invoice_no,
                 'so_cust' => $request->so_cust,
                 'so_ord_date' => $request->so_ord_date,
-                'so_status' => 'Active',  // Assuming you have a status field
+                'so_status' => 'Unpaid',
                 'so_total' => $request->so_total,
                 'sender_name' => $request->sender_name,
                 'sender_email' => $request->sender_email,
@@ -78,10 +78,16 @@ class SalesOrderController extends Controller
             ]);
 
             foreach ($request->items as $item) {
+                // Fetch the item_id using item_code
+                $itemRecord = MasterItem::where('item_code', $item['item_id'])->first();
+                if (!$itemRecord) {
+                    throw new \Exception('Item not found: ' . $item['item_id']);
+                }
+
                 SalesOrderDetails::create([
                     'so_mstr_id' => $salesOrder->id,
                     'line' => $item['line'],
-                    'item_id' => $item['item_id'],
+                    'item_id' => $itemRecord->id,
                     'qty' => $item['qty'],
                     'price' => $item['price'],
                     'total' => $item['total'],
