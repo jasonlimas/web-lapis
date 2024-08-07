@@ -10,12 +10,19 @@ import store from '../store';
 
 const routes = [
     //dashboard
-    { path: '/', name: 'Home', component: Home },
+    //{ path: '/', name: 'Home', component: Home },
 
+    // {
+    //     path: '/index2',
+    //     name: 'index2',
+    //     component: () => import(/* webpackChunkName: "index2" */ '../views/index2.vue'),
+    // },
+
+    // Home
     {
-        path: '/index2',
-        name: 'index2',
-        component: () => import(/* webpackChunkName: "index2" */ '../views/index2.vue'),
+        path: '/',
+        name: 'home',
+        component: () => import('../views/home/index.vue'),
     },
 
     // Items
