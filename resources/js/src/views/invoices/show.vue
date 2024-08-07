@@ -7,7 +7,7 @@
             <nav class="breadcrumb-one" aria-label="breadcrumb">
                 <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="javascript:;">Invoices</a></li>
-                <li class="breadcrumb-item active" aria-current="page" href="/invoices"><span>Daftar Invoice</span></li>
+                <li class="breadcrumb-item active" aria-current="page"><a href="/invoices">Daftar Invoice</a></li>
                 <li class="breadcrumb-item active" aria-current="page"><span>Preview Invoice</span></li>
                 </ol>
             </nav>
@@ -138,12 +138,12 @@
                 <div class="invoice-actions-btn">
                 <div class="invoice-action-btn">
                     <div class="row">
-                    <div class="col-xl-12 col-md-3 col-sm-6">
-                        <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="print()">Print</a>
-                    </div>
-                    <div class="col-xl-12 col-md-3 col-sm-6">
-                        <router-link :to="'/invoices/edit/' + invoice_id" class="btn btn-dark btn-edit">Edit</router-link>
-                    </div>
+                        <div class="col-xl-12 col-md-3 col-sm-6">
+                            <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="print()">Print</a>
+                        </div>
+                        <div class="col-xl-12 col-md-3 col-sm-6">
+                            <router-link :to="'/invoices/edit/' + invoice_id" class="btn btn-dark btn-edit">Edit</router-link>
+                        </div>
                     </div>
                 </div>
                 </div>
