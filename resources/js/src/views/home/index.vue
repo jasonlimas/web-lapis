@@ -6,7 +6,7 @@
                     <div class="page-header">
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page"><span>Blank Page</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span>Sales Data</span></li>
                             </ol>
                         </nav>
                     </div>
@@ -34,15 +34,21 @@ import { useMeta } from '@/composables/use-meta';
 import VueApexCharts from 'vue3-apexcharts';
 
 // Set meta information for the page
-useMeta({ title: 'Blank Page' });
+useMeta({ title: 'Sales Data' });
 
-// Define chart options and series data
+// Define all months
+const allMonths = [
+    '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06',
+    '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'
+];
+
 const options_6 = ref({
     chart: { toolbar: { show: false } },
     dataLabels: { enabled: false },
     stroke: { width: [0, 4] },
-    title: { text: 'Traffic Sources', align: 'left', style: { fontWeight: 'normal' } },
-    xaxis: { type: 'datetime' },
+    title: { text: 'Sales Data', align: 'left', style: { fontWeight: 'normal' } },
+    labels: allMonths,
+    xaxis: { type: 'category' },
     yaxis: [
         { title: { text: 'Revenue' } },
         { opposite: true, title: { text: 'Order Count' } }
@@ -50,24 +56,29 @@ const options_6 = ref({
 });
 
 const series_6 = ref([
-    { name: 'Revenue', type: 'column', data: [] },
-    { name: 'Order Count', type: 'line', data: [] }
+    { name: 'Revenue', type: 'column', data: new Array(12).fill(0) },
+    { name: 'Order Count', type: 'line', data: new Array(12).fill(0) }
 ]);
 
-onMounted(async () => {
+const fetchData = async () => {
     try {
-        const response = await axios.get('/api/sales-data');
-        const salesData = response.data;
+        const response = await axios.get('/api/sales/monthly-data');
+        const data = response.data;
 
-        options_6.value.labels = salesData.months;
+        // Create a map for easy lookup
+        const dataMap = new Map(data.map(item => [item.month, item]));
 
-        series_6.value = [
-            { name: 'Revenue', type: 'column', data: salesData.revenue },
-            { name: 'Order Count', type: 'line', data: salesData.order_count }
-        ];
+        // Merge with predefined months
+        options_6.value.labels = allMonths;
+        series_6.value[0].data = allMonths.map(month => dataMap.get(month)?.revenue || 0);
+        series_6.value[1].data = allMonths.map(month => dataMap.get(month)?.order_count || 0);
     } catch (error) {
         console.error('Error fetching sales data:', error);
     }
+};
+
+onMounted(() => {
+    fetchData();
 });
 </script>
 

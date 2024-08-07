@@ -17,6 +17,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Home stuff
+Route::get('/sales/monthly-data', [SalesOrderController::class, 'getMonthlySalesData']);
+
 // Items
 Route::get('/items', [MasterItemController::class, 'index']);
 Route::post('/items', [MasterItemController::class, 'store']);
@@ -39,4 +42,3 @@ Route::delete('/invoices/{id}', [SalesOrderController::class, 'destroy']);
 Route::get('/invoices/{id}', [SalesOrderController::class, 'show']);
 Route::put('/invoices/{id}', [SalesOrderController::class, 'update']);
 Route::put('/invoices/{id}', [SalesOrderController::class, 'updateStatus']);
-

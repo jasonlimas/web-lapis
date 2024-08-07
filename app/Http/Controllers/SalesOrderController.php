@@ -295,4 +295,20 @@ class SalesOrderController extends Controller
 
         return response()->json(['message' => 'Status updated successfully'], 200);
     }
+
+    public function getMonthlySalesData()
+    {
+        $monthlySalesData = DB::table('sales_order_details')
+            ->join('sales_orders', 'sales_order_details.so_mstr_id', '=', 'sales_orders.id')
+            ->select(
+                DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m") as month'),
+                DB::raw('SUM(sales_order_details.total) as revenue'),
+                DB::raw('COUNT(sales_orders.id) as order_count')
+            )
+            ->groupBy(DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m")'))
+            ->orderBy(DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m")'))
+            ->get();
+
+        return response()->json($monthlySalesData);
+    }
 }
