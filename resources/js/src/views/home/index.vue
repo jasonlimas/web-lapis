@@ -23,6 +23,15 @@
                     </div>
                 </div>
             </div>
+
+            <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
+                <div class="panel br-4">
+                    <div class="panel-body">
+                        <!-- Donut Chart Component -->
+
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -60,20 +69,28 @@ const series_6 = ref([
     { name: 'Order Count', type: 'line', data: new Array(12).fill(0) }
 ]);
 
+const options_7 = ref({
+    chart: { toolbar: { show: false } },
+    responsive: [{ breakpoint: 480, options: { chart: { width: 200 }, legend: { position: 'bottom' } } }],
+    labels: ['Unpaid', 'Paid']
+});
+
+const series_7 = ref([0, 0]); // Initialize with zeros
+
 const fetchData = async () => {
     try {
-        const response = await axios.get('/api/sales/monthly-data');
-        const data = response.data;
+        const salesResponse = await axios.get('/api/sales/monthly-data');
+        const salesData = salesResponse.data;
 
         // Create a map for easy lookup
-        const dataMap = new Map(data.map(item => [item.month, item]));
+        const dataMap = new Map(salesData.map(item => [item.month, item]));
 
         // Merge with predefined months
         options_6.value.labels = allMonths;
         series_6.value[0].data = allMonths.map(month => dataMap.get(month)?.revenue || 0);
         series_6.value[1].data = allMonths.map(month => dataMap.get(month)?.order_count || 0);
     } catch (error) {
-        console.error('Error fetching sales data:', error);
+        console.error('Error fetching data:', error);
     }
 };
 

@@ -311,4 +311,14 @@ class SalesOrderController extends Controller
 
         return response()->json($monthlySalesData);
     }
+
+    public function getAmountByStatus()
+    {
+        $amounts = DB::table('sales_orders')
+            ->select('so_status as status', DB::raw('so_total as amount'))
+            ->groupBy('so_status')
+            ->get();
+
+        return response()->json($amounts);
+    }
 }
