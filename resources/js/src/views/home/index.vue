@@ -6,7 +6,7 @@
                     <div class="page-header">
                         <nav class="breadcrumb-one" aria-label="breadcrumb">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item active" aria-current="page"><span>Sales Data</span></li>
+                                <li class="breadcrumb-item active" aria-current="page"><span>Home</span></li>
                             </ol>
                         </nav>
                     </div>
@@ -34,7 +34,7 @@ import { useMeta } from '@/composables/use-meta';
 import VueApexCharts from 'vue3-apexcharts';
 
 // Set meta information for the page
-useMeta({ title: 'Sales Data' });
+useMeta({ title: 'Home' });
 
 // Define all months
 const allMonths = [
