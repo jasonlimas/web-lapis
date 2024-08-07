@@ -70,8 +70,8 @@
 
                                                         <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 order-sm-0 order-1">
                                                             <div class="inv--payment-info">
-                                                                <p><span class="inv-subtitle">Bank Name:</span> <span>{{ bank_info.name }}</span></p>
-                                                                <p><span class="inv-subtitle">Account Number: </span> <span>{{ bank_info.no }}</span></p>
+                                                                <p><span class="inv-subtitle">Bank Name:</span> <span class="inv-value">{{ bank_info.name }}</span></p>
+                                                                <p><span class="inv-subtitle">Account Number: </span> <span class="inv-value">{{ bank_info.no }}</span></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -214,7 +214,7 @@ const bind_data = async () => {
 
         items.value = invoice.items.map(item => ({
             id: item.id,
-            title: item.item_desc, // Ensure this is item_desc
+            title: item.item_desc,
             quantity: item.qty,
             price: item.price,
             total: item.total,
@@ -228,3 +228,14 @@ const print = () => {
     window.print();
 };
 </script>
+
+<style scoped>
+.inv--payment-info p span.inv-subtitle {
+    display: block;
+}
+.inv--payment-info p span.inv-value {
+    display: block;
+    white-space: normal;
+    word-wrap: break-word;
+}
+</style>
