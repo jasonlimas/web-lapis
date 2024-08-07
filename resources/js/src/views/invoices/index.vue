@@ -70,8 +70,8 @@
                                 </div>
                             </template>
                             <template #invoice="props">
-                                <router-link to="/apps/invoice/preview">
-                                    <span class="inv-number">#{{ props.row.invoice }}</span>
+                                <router-link :to="'/invoices/show/' + props.row.id">
+                                    <span class="inv-number">{{ props.row.invoice }}</span>
                                 </router-link>
                             </template>
                             <template #name="props">
