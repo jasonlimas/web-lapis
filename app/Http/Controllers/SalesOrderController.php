@@ -277,4 +277,16 @@ class SalesOrderController extends Controller
         return response()->json(['nextInvoiceNumber' => $nextInvoiceNumber]);
     }
 
+    public function updateStatus(Request $request, $id)
+    {
+        $request->validate([
+            'status' => 'required|string|in:Unpaid,Paid',
+        ]);
+
+        $invoice = SalesOrder::findOrFail($id);
+        $invoice->so_status = $request->input('status');
+        $invoice->save();
+
+        return response()->json(['message' => 'Status updated successfully'], 200);
+    }
 }
