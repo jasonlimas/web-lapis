@@ -30,13 +30,13 @@
                                                     <div class="row">
                                                         <div class="col-sm-6 col-12 me-auto">
                                                             <div class="d-flex">
-                                                                <img class="company-logo" src="@/assets/images/cork-logo.png" alt="company" />
+                                                                <!-- <img class="company-logo" src="@/assets/images/cork-logo.png" alt="company" /> -->
                                                                 <h3 class="in-heading align-self-center">{{ from.name }}</h3>
                                                             </div>
                                                         </div>
 
                                                         <div class="col-sm-6 text-sm-end">
-                                                            <p class="inv-list-number"><span class="inv-title">Invoice : </span> <span class="inv-number">#{{ invoice_no }}</span></p>
+                                                            <p class="inv-list-number"><span class="inv-title align-self-center">Invoice : </span> <span class="inv-number">{{ invoice_no }}</span></p>
                                                         </div>
 
                                                         <div class="col-sm-6 align-self-center mt-3">
@@ -46,7 +46,6 @@
                                                         </div>
                                                         <div class="col-sm-6 align-self-center mt-3 text-sm-end">
                                                             <p class="inv-created-date"><span class="inv-title">Invoice Date : </span> <span class="inv-date">{{ invoice_date }}</span></p>
-                                                            <p class="inv-due-date"><span class="inv-title">Due Date : </span> <span class="inv-date">{{ due_date }}</span></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -141,9 +140,6 @@
                                     <div class="row">
                                         <div class="col-xl-12 col-md-3 col-sm-6">
                                             <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="print()">Print</a>
-                                        </div>
-                                        <div class="col-xl-12 col-md-3 col-sm-6">
-                                            <a href="javascript:;" class="btn btn-success btn-download">Download</a>
                                         </div>
                                         <div class="col-xl-12 col-md-3 col-sm-6">
                                             <router-link :to="'/invoices/edit/' + invoice_id" class="btn btn-dark btn-edit">Edit</router-link>
