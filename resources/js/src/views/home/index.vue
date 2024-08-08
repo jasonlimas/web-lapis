@@ -47,11 +47,11 @@ import VueApexCharts from 'vue3-apexcharts';
 // Set meta information for the page
 useMeta({ title: 'Home' });
 
-// Define all months
-const allMonths = [
-    '2024-01', '2024-02', '2024-03', '2024-04', '2024-05', '2024-06',
-    '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12'
-];
+// Get the current year
+const currentYear = new Date().getFullYear();
+
+// Generate all months for the current year
+const allMonths = Array.from({ length: 12 }, (_, i) => `${currentYear}-${String(i + 1).padStart(2, '0')}`);
 
 const options_6 = ref({
     chart: { toolbar: { show: false } },
