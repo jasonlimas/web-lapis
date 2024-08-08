@@ -49,6 +49,7 @@ useMeta({ title: 'Home' });
 
 // Get the current year
 const currentYear = new Date().getFullYear();
+// const currentYear = 2025; // For testing
 
 // Generate all months for the current year
 const allMonths = Array.from({ length: 12 }, (_, i) => `${currentYear}-${String(i + 1).padStart(2, '0')}`);
@@ -84,6 +85,14 @@ const loading = ref(true);
 
 const fetchData = async () => {
     try {
+        // Check if the year has changed
+        const storedYear = localStorage.getItem('lastYear');
+        if (storedYear !== currentYear.toString()) {
+            // Reset the donut chart data if the year has changed
+            series_7.value = [0, 0];
+            localStorage.setItem('lastYear', currentYear.toString());
+        }
+
         const salesResponse = await axios.get('/api/sales/monthly-data');
         const salesData = salesResponse.data;
 
