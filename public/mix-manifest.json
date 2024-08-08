@@ -1,5 +1,5 @@
 {
-    "/js/main.js": "/js/main.js?id=61c9a8e8d6bd4d64bd55dddef1bc6f2e",
+    "/js/main.js": "/js/main.js?id=5fd7494958dd917c36300d5331b699e0",
     "/js/chunks/components-tabs.424cead98dae1baa.js": "/js/chunks/components-tabs.424cead98dae1baa.js?id=a73daa222ef373f46566cf4a87371f19",
     "/js/chunks/components-accordions.d0f3f0cfdf344423.js": "/js/chunks/components-accordions.d0f3f0cfdf344423.js?id=2fb45f6d9314d1f337be33497b07643b",
     "/js/chunks/components-modals.9deaf43320dcdeb7.js": "/js/chunks/components-modals.9deaf43320dcdeb7.js?id=2d211afe8402f7f8d6fa1fc1ea03a182",
@@ -96,5 +96,21 @@
     "/js/chunks/tables-export.da6e716375287262.js": "/js/chunks/tables-export.da6e716375287262.js?id=64e1f052254e86bb5f2c1a9b9d0a3612",
     "/js/chunks/tables-live-dom-ordering.cc6b6f7a3a5461e7.js": "/js/chunks/tables-live-dom-ordering.cc6b6f7a3a5461e7.js?id=4433e4373e0949810b849d596abaff84",
     "/js/chunks/tables-miscellaneous.803b0bd3fb02e869.js": "/js/chunks/tables-miscellaneous.803b0bd3fb02e869.js?id=11d63cc78b87bc44a8e7bf0a664fa4cb",
-    "/css/app.css": "/css/app.css?id=c25f05d2be8be87546395edc338baeb8"
+    "/css/app.css": "/css/app.css?id=c25f05d2be8be87546395edc338baeb8",
+    "/js/chunks/components-timeline.352585d7da576a49.js": "/js/chunks/components-timeline.352585d7da576a49.js?id=e8f230d193f846609c49f38cd7f5db42",
+    "/js/chunks/elements-jumbotron.ef68d814e2c47929.js": "/js/chunks/elements-jumbotron.ef68d814e2c47929.js?id=210fc7d3dfa61b6698c6efb7f0e99c86",
+    "/js/chunks/elements-search.d18ddb4f1691f164.js": "/js/chunks/elements-search.d18ddb4f1691f164.js?id=c9ba3cd6fb34b84ebcc1a69c76cb504d",
+    "/js/chunks/elements-typography.ebfa3bdb3edaa2aa.js": "/js/chunks/elements-typography.ebfa3bdb3edaa2aa.js?id=0c90770d496b8a74983c2e6676f7f6ea",
+    "/js/chunks/tables.bf41ad8aa3a0ca70.js": "/js/chunks/tables.bf41ad8aa3a0ca70.js?id=857e7a97bc3d1f845a6c4adb0101bd08",
+    "/js/chunks/dragndrop.d011c913611468af.js": "/js/chunks/dragndrop.d011c913611468af.js?id=a89751ea7e85c0d05472aa610aea4aae",
+    "/js/chunks/apps-chat.6bb8bcfb9a7bc1a7.js": "/js/chunks/apps-chat.6bb8bcfb9a7bc1a7.js?id=ec7b1d3dfe2f89b042b5c1a7c0802af2",
+    "/js/chunks/apps-mailbox.6eed9ae31285d1dc.js": "/js/chunks/apps-mailbox.6eed9ae31285d1dc.js?id=8f122583146415c6879050b57069587c",
+    "/js/chunks/apps-contacts.1cc0ea52d19e2233.js": "/js/chunks/apps-contacts.1cc0ea52d19e2233.js?id=a5bb29ad7d5dc9f20fc89c962051e968",
+    "/js/chunks/apps-invoice-list.012246f024b2b7ca.js": "/js/chunks/apps-invoice-list.012246f024b2b7ca.js?id=18667e33ffe26344d465447ba5237a54",
+    "/js/chunks/apps-invoice-add.e3e0539c774a0596.js": "/js/chunks/apps-invoice-add.e3e0539c774a0596.js?id=30a5df33b1381bcc9b4a7e0ea6997a19",
+    "/js/chunks/apps-invoice-edit.8fd04fc95930290d.js": "/js/chunks/apps-invoice-edit.8fd04fc95930290d.js?id=b4b98bb74d00991643fffcc46450fe53",
+    "/js/chunks/tables-multi-column.d5ad5b3f5fd85e59.js": "/js/chunks/tables-multi-column.d5ad5b3f5fd85e59.js?id=2409bb3c11c37549c895fad0535858fa",
+    "/js/chunks/tables-custom.0b4f5d175b3f9224.js": "/js/chunks/tables-custom.0b4f5d175b3f9224.js?id=24873b8fbec61db490b3e9750a8821c3",
+    "/js/chunks/tables-export.7ec33b41cc731023.js": "/js/chunks/tables-export.7ec33b41cc731023.js?id=5db6b50a57af9a7758194cd50f9e3e59",
+    "/js/chunks/tables-miscellaneous.a69634b97fb10839.js": "/js/chunks/tables-miscellaneous.a69634b97fb10839.js?id=d0fe4b73c63da38c8bea9f583f46eda9"
 }
