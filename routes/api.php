@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Route;
 
 // Home stuff
 Route::get('/sales/monthly-data', [SalesOrderController::class, 'getMonthlySalesData']);
-Route::get('/sales/amount-by-status', [SalesOrderController::class, 'getAmountByStatus']);
+Route::get('/sales/status-totals', [SalesOrderController::class, 'getStatusTotals']);
 
 // Items
 Route::get('/items', [MasterItemController::class, 'index']);

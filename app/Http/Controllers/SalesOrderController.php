@@ -312,13 +312,17 @@ class SalesOrderController extends Controller
         return response()->json($monthlySalesData);
     }
 
-    public function getAmountByStatus()
+    public function getStatusTotals()
     {
-        $amounts = DB::table('sales_orders')
-            ->select('so_status as status', DB::raw('so_total as amount'))
-            ->groupBy('so_status')
-            ->get();
+        $statusTotals = SalesOrder::select(
+            DB::raw('SUM(CASE WHEN so_status = "Unpaid" THEN so_total ELSE 0 END) as unpaid'),
+            DB::raw('SUM(CASE WHEN so_status = "Paid" THEN so_total ELSE 0 END) as paid')
+        )->first();
 
-        return response()->json($amounts);
+        return response()->json([
+            'unpaid' => $statusTotals->unpaid,
+            'paid' => $statusTotals->paid,
+        ]);
     }
+
 }
