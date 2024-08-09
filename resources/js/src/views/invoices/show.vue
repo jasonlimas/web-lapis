@@ -30,16 +30,15 @@
                             <div class="row">
                             <div class="col-sm-6 col-12 me-auto">
                                 <div class="d-flex">
-                                <img class="company-logo" src="@/assets/images/cork-logo.png" alt="company" />
-                                <h3 class="in-heading align-self-center">{{ from.name }}</h3>
+                                <h2 class="in-heading">{{ from.name }}</h2>
                                 </div>
                             </div>
 
                             <div class="col-sm-6 text-sm-end">
-                                <p class="inv-list-number"><span class="inv-title align-self-center">Invoice : </span> <span class="inv-number">{{ invoice_no }}</span></p>
+                                <p class="inv-list-number"><span class="inv-title align-self-center">Invoice Number: </span><span class="inv-number">#{{ invoice_no }}</span></p>
                             </div>
 
-                            <div class="col-sm-6 align-self-center mt-3">
+                            <div class="col-sm-6 align-self-center mt-1">
                                 <p class="inv-street-addr">{{ from.address }}</p>
                                 <p class="inv-email-address">{{ from.email }}</p>
                                 <p class="inv-email-address">{{ from.phone }}</p>
