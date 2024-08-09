@@ -35,7 +35,7 @@
                             </div>
 
                             <div class="col-sm-6 text-sm-end">
-                                <p class="inv-list-number"><span class="inv-title align-self-center">Invoice Number: </span><span class="inv-number">#{{ invoice_no }}</span></p>
+                                <p class="inv-list-number"><span class="inv-title align-self-center">Nomor Invoice: </span><span class="inv-number">#{{ invoice_no }}</span></p>
                             </div>
 
                             <div class="col-sm-6 align-self-center mt-1">
@@ -44,7 +44,7 @@
                                 <p class="inv-email-address">{{ from.phone }}</p>
                             </div>
                             <div class="col-sm-6 align-self-center mt-3 text-sm-end">
-                                <p class="inv-created-date"><span class="inv-title">Invoice Date : </span> <span class="inv-date">{{ invoice_date }}</span></p>
+                                <p class="inv-created-date"><span class="inv-title">Tanggal Invoice: </span> <span class="inv-date">{{ invoice_date }}</span></p>
                             </div>
                             </div>
                         </div>
@@ -52,11 +52,11 @@
                         <div class="inv--detail-section inv--customer-detail-section">
                             <div class="row">
                             <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4 align-self-center">
-                                <p class="inv-to">Invoice To</p>
+                                <p class="inv-to">Invoice Kepada</p>
                             </div>
 
                             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 align-self-center order-sm-0 order-1 inv--payment-info">
-                                <h6 class="inv-title">Payment Info:</h6>
+                                <h6 class="inv-title">Pembayaran Melalui:</h6>
                             </div>
 
                             <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4">
@@ -68,8 +68,8 @@
 
                             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 order-sm-0 order-1">
                                 <div class="inv--payment-info">
-                                <p><span class="inv-subtitle">Bank Name:</span> <span class="inv-value">{{ bank_info.name }}</span></p>
-                                <p><span class="inv-subtitle">Account Number: </span> <span class="inv-value">{{ bank_info.no }}</span></p>
+                                <p><span class="inv-subtitle">Nama Bank:</span> <span class="inv-value">{{ bank_info.name }}</span></p>
+                                <p><span class="inv-subtitle">No. Rekening: </span> <span class="inv-value">{{ bank_info.no }}</span></p>
                                 </div>
                             </div>
                             </div>
@@ -108,7 +108,7 @@
                                 <div class="text-sm-end">
                                 <div class="row">
                                     <div class="col-sm-8 col-7 grand-total-title">
-                                    <h4 class="">Grand Total :</h4>
+                                    <h4 class="">Total :</h4>
                                     </div>
                                     <div class="col-sm-4 col-5 grand-total-amount">
                                     <h4 class="">Rp {{ sub_total }}</h4>
@@ -122,7 +122,7 @@
                         <div class="inv--note">
                             <div class="row mt-4">
                             <div class="col-sm-12 col-12 order-sm-0 order-1">
-                                <p>Note: {{ notes }}</p>
+                                <p>{{ notes }}</p>
                             </div>
                             </div>
                         </div>
@@ -182,10 +182,10 @@ onMounted(() => {
 
 const bind_data = async () => {
     columns.value = [
-        { key: 'title', label: 'ITEMS' },
+        { key: 'title', label: 'ITEM' },
         { key: 'quantity', label: 'QTY' },
-        { key: 'price', label: 'PRICE', class: 'text-end' },
-        { key: 'total', label: 'AMOUNT', class: 'text-end' },
+        { key: 'price', label: 'HARGA', class: 'text-end' },
+        { key: 'total', label: 'TOTAL', class: 'text-end' },
     ];
 
     try {
