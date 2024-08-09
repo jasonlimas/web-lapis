@@ -24776,7 +24776,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
 
 
-var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"footer-wrapper\"><div class=\"footer-section f-section-1\"><p class=\"\"></p></div><div class=\"footer-section f-section-2\"><p class=\"\"> Coded with <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-heart\"><path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"></path></svg></p></div></div>", 1);
+var _hoisted_1 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createStaticVNode)("<div class=\"footer-wrapper\"><div class=\"footer-section f-section-1\"><p class=\"\"></p></div><div class=\"footer-section f-section-2\"><p class=\"\"> Coded with <svg xmlns=\"http://www.w3.org/2000/svg\" width=\"24\" height=\"24\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" class=\"feather feather-heart\"><path d=\"M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z\"></path></svg> . version 1.0.0 </p></div></div>", 1);
 
 function render(_ctx, _cache) {
   return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" BEGIN FOOTER "), _hoisted_1, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)(" END FOOTER ")], 2112
@@ -32418,7 +32418,7 @@ module.exports = "/images/features_overview-71862ac4115d9b272d6c0bf32e4d6943.svg
   \*************************************************/
 /***/ ((module) => {
 
-module.exports = "/images/logo-26e5abdbb67a5f6a0b02ca86a0c789ee.svg";
+module.exports = "/images/logo-f3ca33532c7beec3e8ff7b381e03196c.svg";
 
 /***/ }),
 
@@ -69846,7 +69846,7 @@ module.exports = JSON.parse('{"dashboard":"仪表盘","sales":"销售量","analy
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "js/chunks/" + chunkId + "." + {"resources_js_src_views_home_index_vue":"193a7f83a9ee874c","resources_js_src_views_items_index_vue":"39bc18af0ff2805c","resources_js_src_views_items_create_vue":"6fea157a223f5c79","resources_js_src_views_items_edit_vue":"66f29990ce9adb14","resources_js_src_views_customers_index_vue":"dea21bb87a558863","resources_js_src_views_customers_create_vue":"102cd76a9cd1f411","resources_js_src_views_customers_edit_vue":"0307f12e7bbb3733","resources_js_src_views_invoices_index_vue":"6db1e9edee2829e3","resources_js_src_views_invoices_create_vue":"bf828a2105f984f1","resources_js_src_views_invoices_edit_vue":"9ebea912948e8628","resources_js_src_views_invoices_show_vue":"171e9b91eee6c259"}[chunkId] + ".js";
+/******/ 			return "js/chunks/" + chunkId + "." + {"resources_js_src_views_home_index_vue":"904557e5ad939259","resources_js_src_views_items_index_vue":"a7db0d7f1f82323f","resources_js_src_views_items_create_vue":"58053adf9be08604","resources_js_src_views_items_edit_vue":"a5209b75c163c52d","resources_js_src_views_customers_index_vue":"60311b7e67efc357","resources_js_src_views_customers_create_vue":"bb3c265c4293d2a9","resources_js_src_views_customers_edit_vue":"f4f18efe4465066a","resources_js_src_views_invoices_index_vue":"7734d00fa9d863c9","resources_js_src_views_invoices_create_vue":"e790b0ecb74cdb15","resources_js_src_views_invoices_edit_vue":"4670851863bf624b","resources_js_src_views_invoices_show_vue":"35eb18722ae9a741"}[chunkId] + ".js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
