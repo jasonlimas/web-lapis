@@ -93,8 +93,8 @@
                                     <td>
                                     {{ item.quantity }}
                                     </td>
-                                    <td class="text-end">Rp {{ item.price }}</td>
-                                    <td class="text-end">Rp {{ item.total }}</td>
+                                    <td class="text-end">Rp {{ formatCurrency(item.price) }}</td>
+                                    <td class="text-end">Rp {{ formatCurrency(item.total) }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -111,7 +111,7 @@
                                     <h4 class="">Total :</h4>
                                     </div>
                                     <div class="col-sm-4 col-5 grand-total-amount">
-                                    <h4 class="">Rp {{ sub_total }}</h4>
+                                    <h4 class="">Rp {{ formatCurrency(sub_total) }}</h4>
                                     </div>
                                 </div>
                                 </div>
@@ -175,6 +175,10 @@ const due_date = ref('');
 const bank_info = ref({ no: '', name: '' });
 const notes = ref('');
 const sub_total = ref(0);
+
+const formatCurrency = (value) => {
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
 
 onMounted(() => {
     bind_data();
