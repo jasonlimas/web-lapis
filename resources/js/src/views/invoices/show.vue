@@ -114,6 +114,14 @@
                                     <h4 class="">Rp {{ formatCurrency(sub_total) }}</h4>
                                     </div>
                                 </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-8 col-7 grand-total-title">
+                                        <h4 class=""></h4>
+                                    </div>
+                                    <div class="col-sm-4 col-5 grand-total-title">
+                                        <h4 class="">{{ numberToWords(sub_total) }}</h4>
+                                    </div>
+                                </div>
                                 </div>
                             </div>
                             </div>
@@ -178,6 +186,55 @@ const sub_total = ref(0);
 
 const formatCurrency = (value) => {
     return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+};
+
+const numberToWords = (num) => {
+    const units = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan"];
+    const teens = ["sepuluh", "sebelas", "dua belas", "tiga belas", "empat belas", "lima belas", "enam belas", "tujuh belas", "delapan belas", "sembilan belas"];
+    const tens = ["", "", "dua puluh", "tiga puluh", "empat puluh", "lima puluh", "enam puluh", "tujuh puluh", "delapan puluh", "sembilan puluh"];
+    const thousands = ["", "ribu", "juta", "miliar", "triliun"];
+
+    if (num === 0) return "nol";
+
+    if (num < 0) return "minus " + numberToWords(Math.abs(num));
+
+    let word = "";
+
+    let i = 0;
+    while (num > 0) {
+        let chunk = num % 1000;
+        if (chunk) {
+            let chunkWord = "";
+
+            if (chunk < 10) {
+                chunkWord = units[chunk];
+            } else if (chunk < 20) {
+                chunkWord = teens[chunk - 10];
+            } else {
+                let unit = chunk % 10;
+                let ten = Math.floor((chunk % 100) / 10);
+                let hundred = Math.floor(chunk / 100);
+
+                if (hundred) {
+                    chunkWord += units[hundred] + " ratus ";
+                }
+
+                if (ten) {
+                    chunkWord += tens[ten] + " ";
+                }
+
+                if (unit) {
+                    chunkWord += units[unit];
+                }
+            }
+
+            word = chunkWord.trim() + " " + thousands[i] + " " + word;
+        }
+        num = Math.floor(num / 1000);
+        i++;
+    }
+
+    return word.trim() + " Rupiah";
 };
 
 onMounted(() => {

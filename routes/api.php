@@ -42,4 +42,4 @@ Route::post('/sales-orders', [SalesOrderController::class, 'store']);
 Route::delete('/invoices/{id}', [SalesOrderController::class, 'destroy']);
 Route::get('/invoices/{id}', [SalesOrderController::class, 'show']);
 Route::put('/invoices/{id}', [SalesOrderController::class, 'update']);
-Route::put('/invoices/{id}', [SalesOrderController::class, 'updateStatus']);
+Route::put('/invoices/status/{id}', [SalesOrderController::class, 'updateStatus']);

@@ -267,7 +267,7 @@ const toggleStatus = async (item) => {
     item.status.key = item.status.key === 'Paid' ? 'Unpaid' : 'Paid';
     item.status.class = getStatusClass(item.status.key);
     try {
-        await axios.put(`/api/invoices/${item.id}`, { status: item.status.key });
+        await axios.put(`/api/invoices/status/${item.id}`, { status: item.status.key });
         // Refresh the component data to reflect the change
         bind_data();
     } catch (error) {
