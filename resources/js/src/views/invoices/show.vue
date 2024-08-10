@@ -118,8 +118,8 @@
                                     <div class="col-sm-8 col-7 grand-total-title">
                                         <h4 class=""></h4>
                                     </div>
-                                    <div class="col-sm-4 col-5 grand-total-title">
-                                        <h4 class="">{{ numberToWords(sub_total) }}</h4>
+                                    <div class="">
+                                        <p class="">{{ numberToWords(sub_total) }}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -189,14 +189,14 @@ const formatCurrency = (value) => {
 };
 
 const numberToWords = (num) => {
-    const units = ["", "satu", "dua", "tiga", "empat", "lima", "enam", "tujuh", "delapan", "sembilan"];
-    const teens = ["sepuluh", "sebelas", "dua belas", "tiga belas", "empat belas", "lima belas", "enam belas", "tujuh belas", "delapan belas", "sembilan belas"];
-    const tens = ["", "", "dua puluh", "tiga puluh", "empat puluh", "lima puluh", "enam puluh", "tujuh puluh", "delapan puluh", "sembilan puluh"];
-    const thousands = ["", "ribu", "juta", "miliar", "triliun"];
+    const units = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"];
+    const teens = ["Sepuluh", "Sebelas", "Dua Belas", "Tiga Belas", "Empat Belas", "Lima Belas", "Enam Belas", "Tujuh Belas", "Delapan Belas", "Sembilan Belas"];
+    const tens = ["", "", "Dua Puluh", "Tiga Puluh", "Empat Puluh", "Lima Puluh", "Enam Puluh", "Tujuh Puluh", "Delapan Puluh", "Sembilan Puluh"];
+    const thousands = ["", "Ribu", "Juta", "Miliar", "Triliun"];
 
-    if (num === 0) return "nol";
+    if (num === 0) return "Nol";
 
-    if (num < 0) return "minus " + numberToWords(Math.abs(num));
+    if (num < 0) return "Minus " + numberToWords(Math.abs(num));
 
     let word = "";
 
@@ -216,7 +216,7 @@ const numberToWords = (num) => {
                 let hundred = Math.floor(chunk / 100);
 
                 if (hundred) {
-                    chunkWord += units[hundred] + " ratus ";
+                    chunkWord += units[hundred] + " Ratus ";
                 }
 
                 if (ten) {
