@@ -298,15 +298,14 @@ class SalesOrderController extends Controller
 
     public function getMonthlySalesData()
     {
-        $monthlySalesData = DB::table('sales_order_details')
-            ->join('sales_orders', 'sales_order_details.so_mstr_id', '=', 'sales_orders.id')
+        $monthlySalesData = DB::table('sales_orders')
             ->select(
-                DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m") as month'),
-                DB::raw('SUM(sales_order_details.total) as revenue'),
-                DB::raw('COUNT(sales_orders.id) as order_count')
+                DB::raw('DATE_FORMAT(so_ord_date, "%Y-%m") as month'),
+                DB::raw('SUM(so_total) as revenue'),
+                DB::raw('COUNT(DISTINCT id) as order_count')
             )
-            ->groupBy(DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m")'))
-            ->orderBy(DB::raw('DATE_FORMAT(sales_orders.so_ord_date, "%Y-%m")'))
+            ->groupBy(DB::raw('DATE_FORMAT(so_ord_date, "%Y-%m")'))
+            ->orderBy(DB::raw('DATE_FORMAT(so_ord_date, "%Y-%m")'))
             ->get();
 
         return response()->json($monthlySalesData);
