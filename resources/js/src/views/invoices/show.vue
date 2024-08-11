@@ -30,18 +30,18 @@
                             <div class="row">
                             <div class="col-sm-6 col-12 me-auto">
                                 <div class="d-flex">
-                                <h2 class="in-heading">{{ from.name }}</h2>
+                                <h2 class="in-heading text-dark">{{ from.name }}</h2>
                                 </div>
                             </div>
 
                             <div class="col-sm-6 text-sm-end">
-                                <p class="inv-list-number"><span class="inv-title align-self-center">Nomor Invoice: </span><span class="inv-number">#{{ invoice_no }}</span></p>
+                                <p class="inv-list-number"><span class="inv-title align-self-center text-dark">No. Invoice: </span><span class="inv-number text-dark">#{{ invoice_no }}</span></p>
                             </div>
 
                             <div class="col-sm-6 align-self-center mt-1">
-                                <p class="inv-street-addr">{{ from.address }}</p>
-                                <p class="inv-email-address">{{ from.email }}</p>
-                                <p class="inv-email-address">{{ from.phone }}</p>
+                                <p class="inv-street-addr text-dark">{{ from.address }}</p>
+                                <p class="inv-email-address text-dark">{{ from.email }}</p>
+                                <p class="inv-email-address text-dark">{{ from.phone }}</p>
                             </div>
                             <div class="col-sm-6 align-self-center mt-3 text-sm-end">
                                 <p class="inv-created-date"><span class="inv-title">Tanggal Invoice: </span> <span class="inv-date">{{ invoice_date }}</span></p>
@@ -52,24 +52,24 @@
                         <div class="inv--detail-section inv--customer-detail-section">
                             <div class="row">
                             <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4 align-self-center">
-                                <p class="inv-to">Invoice Kepada</p>
+                                <p class="inv-to text-dark">Invoice Kepada</p>
                             </div>
 
                             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 align-self-center order-sm-0 order-1 inv--payment-info">
-                                <h6 class="inv-title">Pembayaran Melalui:</h6>
+                                <h6 class="inv-title text-dark">Pembayaran Melalui:</h6>
                             </div>
 
                             <div class="col-xl-8 col-lg-7 col-md-6 col-sm-4">
-                                <p class="inv-customer-name">{{ to.name }}</p>
-                                <p class="inv-street-addr">{{ to.address }}</p>
-                                <p class="inv-email-address">{{ to.email }}</p>
-                                <p class="inv-email-address">{{ to.phone }}</p>
+                                <p class="inv-customer-name text-dark">{{ to.name }}</p>
+                                <p class="inv-street-addr text-dark">{{ to.address }}</p>
+                                <p class="inv-email-address text-dark">{{ to.email }}</p>
+                                <p class="inv-email-address text-dark">{{ to.phone }}</p>
                             </div>
 
                             <div class="col-xl-4 col-lg-5 col-md-6 col-sm-8 col-12 order-sm-0 order-1">
                                 <div class="inv--payment-info">
-                                <p><span class="inv-subtitle">Nama Bank:</span> <span class="inv-value">{{ bank_info.name }}</span></p>
-                                <p><span class="inv-subtitle">No. Rekening: </span> <span class="inv-value">{{ bank_info.no }}</span></p>
+                                <p><span class="inv-subtitle text-dark">Nama Bank:</span> <span class="inv-value text-dark">{{ bank_info.name }}</span></p>
+                                <p><span class="inv-subtitle text-dark">No. Rekening: </span> <span class="inv-value text-dark">{{ bank_info.no }}</span></p>
                                 </div>
                             </div>
                             </div>
@@ -87,14 +87,14 @@
                                 </thead>
                                 <tbody>
                                 <tr v-for="item in items" :key="item.id">
-                                    <td>
+                                    <td class="text-dark">
                                     {{ item.title }}
                                     </td>
-                                    <td>
+                                    <td class="text-dark">
                                     {{ item.quantity }}
                                     </td>
-                                    <td class="text-end">Rp {{ formatCurrency(item.price) }}</td>
-                                    <td class="text-end">Rp {{ formatCurrency(item.total) }}</td>
+                                    <td class="text-end text-dark">Rp {{ formatCurrency(item.price) }}</td>
+                                    <td class="text-end text-dark">Rp {{ formatCurrency(item.total) }}</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -119,7 +119,7 @@
                                         <h4 class=""></h4>
                                     </div>
                                     <div class="">
-                                        <p class="">{{ numberToWords(sub_total) }}</p>
+                                        <p class="text-dark">{{ numberToWords(sub_total) }}</p>
                                     </div>
                                 </div>
                                 </div>
@@ -243,10 +243,10 @@ onMounted(() => {
 
 const bind_data = async () => {
     columns.value = [
-        { key: 'title', label: 'ITEM' },
-        { key: 'quantity', label: 'QTY' },
-        { key: 'price', label: 'HARGA', class: 'text-end' },
-        { key: 'total', label: 'TOTAL', class: 'text-end' },
+        { key: 'title', label: 'ITEM', class: 'text-dark' },
+        { key: 'quantity', label: 'QTY', class: 'text-dark' },
+        { key: 'price', label: 'HARGA', class: 'text-end text-dark' },
+        { key: 'total', label: 'TOTAL', class: 'text-end text-dark' },
     ];
 
     try {
