@@ -294,4 +294,16 @@ const print = () => {
     white-space: normal;
     word-wrap: break-word;
 }
+
+@media print {
+    body {
+        margin: 20mm 100mm 20mm 100mm; /* Adjust margins as needed */
+    }
+
+    .invoice-container {
+        padding: 10mm; /* Add padding to the content if needed */
+    }
+
+    /* Add more specific print styles here if necessary */
+}
 </style>
