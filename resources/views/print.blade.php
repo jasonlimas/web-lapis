@@ -23,7 +23,7 @@
             max-width: 800px;
             margin: auto;
             padding: 20px;
-            border: 1px solid #777;
+            border: 1px solid;
             background-color: #fff;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
@@ -32,7 +32,7 @@
         .header {
             text-align: center;
             margin-bottom: 20px;
-            border-bottom: 2px dashed #777; /* Dashed line for a bakery feel */
+            border-bottom: 2px dashed; /* Dashed line for a bakery feel */
             padding-bottom: 10px;
         }
 
@@ -40,7 +40,7 @@
             margin: 0;
             padding: 0;
             font-size: 24px;
-            color: #333;
+            color: #000;
             font-family: 'Dancing Script', cursive; /* Cursive for a cake shop look */
         }
 
@@ -67,13 +67,13 @@
 
         .items th, .items td {
             padding: 8px;
-            border: 1px solid #ddd;
+            border: 1px solid #777;
             text-align: left;
         }
 
         .items th {
-            background-color: #f9f9f9;
-            color: #333;
+            background-color: #c0c0c0;
+            color: #000;
             font-weight: bold;
         }
 
@@ -120,7 +120,7 @@
 
         .notes {
             font-size: 10px;
-            color: #555;
+            color: #333;
             margin-bottom: 20px;
         }
 
@@ -128,8 +128,8 @@
             font-size: 12px;
             margin-bottom: 20px;
             padding: 10px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
+            border: 1px solid;
+            background-color: #eee;
             border-radius: 5px;
         }
 
@@ -137,7 +137,7 @@
             text-align: center;
             font-size: 10px;
             color: #000;
-            border-top: 1px dashed #777;
+            border-top: 1px dashed;
             padding-top: 10px;
             margin-top: 20px;
         }
