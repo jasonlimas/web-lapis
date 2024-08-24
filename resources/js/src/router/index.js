@@ -70,7 +70,7 @@ const routes = [
         path: '/invoices/show/:id',
         name: 'invoices-show',
         component: () => import('../views/invoices/show.vue')
-    },
+    }
 ];
 
 const router = new createRouter({

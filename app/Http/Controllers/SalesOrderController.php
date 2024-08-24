@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SalesOrderController extends Controller
 {
@@ -108,10 +109,11 @@ class SalesOrderController extends Controller
     {
         try {
             $invoice = SalesOrder::with('customer', 'details')->findOrFail($id);
+            $formattedInvoiceNumber = $this->convertMonthToRoman($invoice->so_nbr);
 
             return response()->json([
                 'id' => $invoice->id,
-                'so_nbr' => $invoice->so_nbr,
+                'so_nbr' => $formattedInvoiceNumber,
                 'customer' => [
                     'id' => $invoice->customer->id,
                     'cust_desc' => $invoice->customer->cust_desc,
@@ -324,4 +326,113 @@ class SalesOrderController extends Controller
         ]);
     }
 
+    private function convertMonthToRoman($invoiceNumber) {
+        $monthsInRoman = [
+            '01' => 'I', '02' => 'II', '03' => 'III', '04' => 'IV', '05' => 'V', '06' => 'VI',
+            '07' => 'VII', '08' => 'VIII', '09' => 'IX', '10' => 'X', '11' => 'XI', '12' => 'XII'
+        ];
+
+        // Split the invoice number by "/"
+        $parts = explode('/', $invoiceNumber);
+
+        // Check if the format is correct (has 3 parts)
+        if (count($parts) === 3) {
+            $month = $parts[1]; // Get the middle part representing the month
+            if (array_key_exists($month, $monthsInRoman)) {
+                $parts[1] = $monthsInRoman[$month]; // Replace with the Roman numeral
+            }
+            return implode('/', $parts); // Join the parts back together
+        }
+
+        return $invoiceNumber; // Return original if format doesn't match
+    }
+
+    private function numberToWords($num)
+    {
+        $units = ["", "Satu", "Dua", "Tiga", "Empat", "Lima", "Enam", "Tujuh", "Delapan", "Sembilan"];
+        $teens = ["Sepuluh", "Sebelas", "Dua Belas", "Tiga Belas", "Empat Belas", "Lima Belas", "Enam Belas", "Tujuh Belas", "Delapan Belas", "Sembilan Belas"];
+        $tens = ["", "", "Dua Puluh", "Tiga Puluh", "Empat Puluh", "Lima Puluh", "Enam Puluh", "Tujuh Puluh", "Delapan Puluh", "Sembilan Puluh"];
+        $thousands = ["", "Ribu", "Juta", "Miliar", "Triliun"];
+
+        if ($num === 0) return "Nol";
+
+        if ($num < 0) return "Minus " . $this->numberToWords(abs($num));
+
+        $word = "";
+        $i = 0;
+        while ($num > 0) {
+            $chunk = $num % 1000;
+            if ($chunk) {
+                $chunkWord = "";
+                if ($chunk < 10) {
+                    $chunkWord = $units[$chunk];
+                } elseif ($chunk < 20) {
+                    $chunkWord = $teens[$chunk - 10];
+                } else {
+                    $unit = $chunk % 10;
+                    $ten = floor(($chunk % 100) / 10);
+                    $hundred = floor($chunk / 100);
+                    if ($hundred) {
+                        $chunkWord .= $units[$hundred] . " Ratus ";
+                    }
+                    if ($ten) {
+                        $chunkWord .= $tens[$ten] . " ";
+                    }
+                    if ($unit) {
+                        $chunkWord .= $units[$unit];
+                    }
+                }
+                $word = $chunkWord . " " . $thousands[$i] . " " . $word;
+            }
+            $num = floor($num / 1000);
+            $i++;
+        }
+        return trim($word) . " Rupiah";
+    }
+
+    public function printInvoice($id)
+    {
+        try {
+            $invoice = SalesOrder::with('customer', 'details')->findOrFail($id);
+            $formattedInvoiceNumber = $this->convertMonthToRoman($invoice->so_nbr);
+
+            $data = [
+                'from' => [
+                    'name' => $invoice->sender_name,
+                    'address' => $invoice->sender_address,
+                    'email' => $invoice->sender_email,
+                    'phone' => $invoice->sender_phone,
+                ],
+                'to' => [
+                    'name' => $invoice->customer->cust_desc,
+                    'address' => $invoice->customer->cust_addr,
+                    'email' => $invoice->customer->cust_email,
+                    'phone' => $invoice->customer->cust_phone,
+                ],
+                'invoice_no' => $formattedInvoiceNumber,
+                'invoice_date' => $invoice->so_ord_date->format('d-m-Y'),
+                'bank_info' => [
+                    'name' => $invoice->bank_name,
+                    'no' => $invoice->bank_account_no,
+                ],
+                'notes' => $invoice->notes,
+                'sub_total' => $invoice->so_total,
+                'sub_total_in_words' => $this->numberToWords($invoice->so_total), // Convert to words here
+                'items' => $invoice->details->map(function ($item) {
+                    return [
+                        'title' => $item->item->item_desc,
+                        'quantity' => $item->qty,
+                        'price' => $item->price,
+                        'total' => $item->total,
+                    ];
+                }),
+            ];
+
+            $pdf = \Barryvdh\DomPDF\Facade\Pdf::loadView('print', $data);
+            return $pdf->stream('invoice.pdf');
+        } catch (\Exception $e) {
+            \Log::error('Error generating PDF:', ['error' => $e->getMessage()]);
+            return response()->json(['message' => 'Error generating PDF', 'error' => $e->getMessage()], 500);
+        }
+    }
 }

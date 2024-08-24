@@ -146,7 +146,7 @@
                 <div class="invoice-action-btn">
                     <div class="row">
                         <div class="col-xl-12 col-md-3 col-sm-6">
-                            <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="print()">Print</a>
+                            <a href="javascript:;" class="btn btn-secondary btn-print action-print" @click="printInvoice">Print</a>
                         </div>
                         <div class="col-xl-12 col-md-3 col-sm-6">
                             <router-link :to="'/invoices/edit/' + invoice_id" class="btn btn-dark btn-edit">Edit</router-link>
@@ -280,8 +280,9 @@ const bind_data = async () => {
     }
 };
 
-const print = () => {
-    window.print();
+const printInvoice = () => {
+    const printUrl = `/api/invoices/${invoice_id.value}/print`;
+    window.open(printUrl, '_blank'); // Open in a new tab to show the print dialog
 };
 </script>
 

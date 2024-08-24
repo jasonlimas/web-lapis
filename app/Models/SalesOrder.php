@@ -26,6 +26,13 @@ class SalesOrder extends Model
         'notes',
     ];
 
+    // Add the date casting
+    protected $casts = [
+        'so_ord_date' => 'datetime',
+        'due_date' => 'datetime', // if you have a due_date field
+        // Add other date fields here if needed
+    ];
+
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
 
     public function customer()
